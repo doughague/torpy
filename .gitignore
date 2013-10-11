@@ -1,0 +1,20 @@
+# .gitignore for torpy
+
+# general
+*~
+
+# directories with compiled files
+bin/
+cache/
+lib/
+
+# documentation
+!doc/
+doc/doxy.log
+doc/html/
+
+# be sure to include sources
+!include/
+!src/lib/
+!src/progs/
+!src/test/
