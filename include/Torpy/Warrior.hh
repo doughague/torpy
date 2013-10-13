@@ -35,8 +35,8 @@ public:
   inline Parameter& agility(){ return mAgility; }
   inline const Parameter& intelligence() const { return mIntelligence; }
   inline Parameter& intelligence(){ return mIntelligence; }
-  inline const Parameter& persistence() const { return mPersistence; }
-  inline Parameter& persistence(){ return mPersistence; }
+  inline const Parameter& personality() const { return mPersonality; }
+  inline Parameter& personality(){ return mPersonality; }
   inline const Parameter& health() const { return mHealth; }
   inline Parameter& health(){ return mHealth; }
 
@@ -47,7 +47,7 @@ private:
   Parameter mProwess;
   Parameter mAgility;
   Parameter mIntelligence;
-  Parameter mPersistence;
+  Parameter mPersonality;
   Parameter mHealth;
 };
 

@@ -16,7 +16,7 @@ Warrior::Warrior(const char* name, const char* title)
     mProwess("prowess","Prowess", 0., 0., 0. ,100.),
     mAgility("agility","Agility", 0., 0., 0. ,100.),
     mIntelligence("intelligence","Intelligence", 0., 0., 0. ,100.),
-    mPersistence("persistence","Persistence", 0., 0., 0. ,100.),
+    mPersonality("personality","Personality", 0., 0., 0. ,100.),
     mHealth("health","Health", 0., 0., 0. ,100.)
 {}
 
@@ -27,7 +27,7 @@ Warrior::Warrior(const Warrior& other, const char* newName)
     mProwess(other.mProwess),
     mAgility(other.mAgility),
     mIntelligence(other.mIntelligence),
-    mPersistence(other.mPersistence),
+    mPersonality(other.mPersonality),
     mHealth(other.mHealth)
 {
   if(newName && strlen(newName)!=0) setName(newName);
@@ -48,7 +48,7 @@ Warrior& Warrior::operator=(const Warrior& rhs)
   mProwess      = rhs.mProwess;
   mAgility      = rhs.mAgility;
   mIntelligence = rhs.mIntelligence;
-  mPersistence  = rhs.mPersistence;
+  mPersonality  = rhs.mPersonality;
   mHealth       = rhs.mHealth;
   return *this;
 }
@@ -62,7 +62,7 @@ bool Warrior::isEmpty() const
   return (mProwess.isEmpty() &&
 	  mAgility.isEmpty() &&
 	  mIntelligence.isEmpty() &&
-	  mPersistence.isEmpty() &&
+	  mPersonality.isEmpty() &&
 	  mHealth.isEmpty());
 }
 
@@ -73,7 +73,7 @@ void Warrior::clear()
   mProwess.clear();
   mAgility.clear();
   mIntelligence.clear();
-  mPersistence.clear();
+  mPersonality.clear();
   mHealth.clear(); 
 }
 
@@ -91,7 +91,7 @@ bool Warrior::isEqual(const AbsObject& other) const
   return (mProwess      == w->prowess() &&
 	  mAgility      == w->agility() &&
 	  mIntelligence == w->intelligence() &&
-	  mPersistence  == w->persistence() &&
+	  mPersonality  == w->Personality() &&
 	  mHealth       == w->health());
 }
 
