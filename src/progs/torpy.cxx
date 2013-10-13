@@ -32,10 +32,10 @@ int main(int /*argc*/, char** /*argv*/)
   // --------------------------------------------
   // Welcome the user
   tout << "*****************************************************************" << endl;
-  tout << "*                 ----- ----- ----- ----- \\   /                 *" << endl;
-  tout << "*                   |   |   | |_  | |___|  \\ /                  *" << endl;
+  tout << "*                 /---\\ /---\\ ----\\ ----\\ \\   /                 *" << endl;
+  tout << "*                   |   |   | |_  | |___/  \\ /                  *" << endl;
   tout << "*                   |   |   | |  \\  |       |                   *" << endl;
-  tout << "*                   |   ----- |   \\ |       |                   *" << endl;
+  tout << "*                   |   \\---/ |   \\ |       |                   *" << endl;
   tout << "*****************************************************************" << endl;
   tout << "* Copyright (C) 2013  Jason Torpy, Doug Hague                   *" << endl;
   tout << "*           This program comes with ABSOLUTELY NO WARRANTY.     *" << endl;
