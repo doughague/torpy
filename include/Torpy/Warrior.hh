@@ -44,7 +44,7 @@ public:
   inline const Parameter& health() const { return mAttribs["health"]; }
   inline Parameter& health(){ return mAttribs["health"]; }
 
-  // set / get diability
+  // set / get disability
   inline const Disability& disability() const { return mDisability; }
   inline Disability& disability(){ return mDisability; }  
   // set / get individual disabilities
@@ -63,6 +63,10 @@ public:
 
   // fight
   int fight(Warrior& other);
+    // choice of attacking - fight or flight
+    bool forf();
+    // attack action
+    double swing();
 
 private:
   WarriorAttribs mAttribs;

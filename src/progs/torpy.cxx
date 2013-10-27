@@ -67,6 +67,8 @@ int main(int /*argc*/, char** /*argv*/)
   w2.intelligence().set(50., 5., 0. ,100.);
   w2.personality().set(50., 5., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
+    
+nextround: // the swing-by-swing fight returns here after each swing, unless the fight is over, assuming I've used the 'goto' function properly.
 
   // --------------------------------------------
   // Print warrior info
@@ -83,6 +85,7 @@ int main(int /*argc*/, char** /*argv*/)
   tout << "***********************************" << endl;
   tout << "Commands: " << endl;
   tout << "  fight:  Have " << w1.name() << " fight " << w2.name() << "." << endl;
+    tout << "  fight:  Have " << w1.name() << " and " << w2.name() << " trade blows." << endl;
   tout << "   quit:  Quit the game and exit." << endl;
   tout << "***********************************" << endl;
 
@@ -106,7 +109,78 @@ int main(int /*argc*/, char** /*argv*/)
       else 
 	tout << " ==> " << "Draw" << endl;
     }
-  }
+      
+      // resolve fight by swings
+      if(cmd == "swing"){
+          if(!w1.forf() && !w2.forf()) { // forf should resolve as true or false so this should read if w1 forf is false and w2 forf is false, but let me know if it's not.
+              if(w1.fatigue().value()>=3.){
+                  w1.fatigue().value().set+=3.;
+              }
+              else w1.fatigue().value()=0;
+              if(w2.fatigue().value()>=3.){
+                  w2.fatigue().value().set+=3.;
+              }
+              else w2.fatigue().value()=0;
+          tout << " ==> The two warriors circle each other." << endl;
+              goto nextround;
+          }
+          /* In the if statement above, why can't I use the short form for the if above: w1.fatigue().value()>=3 ? w1.fatigue().value()-=3 : w1.fatigue().value()=0;
+          */
+      // swing results to be expanded below, but simple results is below. Need to initialize swingResult variable.
+          double swingResult=w1.swing().value()-w2.swing().value();
+          
+          switch(swingResult){
+              case <-100.:
+                  if (w1.health().value()<=20) {
+                      tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
+                      break;
+                  }
+                  else {
+                    w1.health().value()-=20; // reduce health by 20 - just a simple result and restart. if/else order required to ensure value doesn't fall below allowed minimum.
+                    tout << " ==> " w2.name() << " hits " << w1.name() << endl;
+                      goto nextround;
+                  }
+              case <-50.:
+                  if (w1.health().value()<=10) {
+                      tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
+                      break;
+                  }
+                  else {
+                      w1.health().value()-=10;
+                      tout << " ==> " w2.name() << " hits " << w1.name() << endl;
+                      goto nextround;
+                  }
+              case <50.:
+                  tout << " ==> weapons clash and the fight continues.";
+                  goto nextround;
+              case <100.: // will trigger on 50-99
+                  if (w2.health().value()<=10) {
+                      tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
+                      break;
+                  }
+                  else {
+                      w2.health().value()-=10;
+                      tout << " ==> " w1.name() << " hits " << w1.name() << endl;
+                      goto nextround;
+                  }
+              case >=100.:
+                  if (w2.health().value()<=20) {
+                      tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
+                      break;
+                  }
+                  else {
+                      w2.health().value()-=20;
+                      tout << " ==> " w1.name() << " hits " << w1.name() << endl;
+                      goto nextround;
+                  }
+              default: // accounts for
+                  tout << " ==> weapons clash and the fight continues.";
+                  goto nextround;
+          } // swing result switch
+      } // swing command
+
+      
+  } // while cmd not quit
 
   // --------------------------------------------
   // clean & return
