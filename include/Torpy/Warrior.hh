@@ -7,8 +7,9 @@
 #ifndef TP_WARRIOR_HH
 #define TP_WARRIOR_HH
 
-#include "Torpy/Named.hh"      // mother class
-#include "Torpy/Parameter.hh"  // parameter
+#include "Torpy/Named.hh"           // mother class
+#include "Torpy/WarriorAttribs.hh"  // warrior attributes
+#include "Torpy/Disability.hh"      // warrior disabilityies
 
 namespace Torpy {
 
@@ -28,27 +29,44 @@ public:
   void clear();
   bool isEqual(const AbsObject& other) const;
 
-  // set / get
-  inline const Parameter& prowess() const { return mProwess; }
-  inline Parameter& prowess(){ return mProwess; }
-  inline const Parameter& agility() const { return mAgility; }
-  inline Parameter& agility(){ return mAgility; }
-  inline const Parameter& intelligence() const { return mIntelligence; }
-  inline Parameter& intelligence(){ return mIntelligence; }
-  inline const Parameter& personality() const { return mPersonality; }
-  inline Parameter& personality(){ return mPersonality; }
-  inline const Parameter& health() const { return mHealth; }
-  inline Parameter& health(){ return mHealth; }
+  // set / get attributes
+  inline const WarriorAttribs& attribs() const { return mAttribs; }
+  inline WarriorAttribs& attribs(){ return mAttribs; }  
+  // set / get individual attributes
+  inline const Parameter& prowess() const { return mAttribs["prowess"]; }
+  inline Parameter& prowess(){ return mAttribs["prowess"]; }
+  inline const Parameter& agility() const { return mAttribs["agility"]; }
+  inline Parameter& agility(){ return mAttribs["agility"]; }
+  inline const Parameter& intelligence() const { return mAttribs["intelligence"]; }
+  inline Parameter& intelligence(){ return mAttribs["intelligence"]; }
+  inline const Parameter& personality() const { return mAttribs["personality"]; }
+  inline Parameter& personality(){ return mAttribs["personality"]; }
+  inline const Parameter& health() const { return mAttribs["health"]; }
+  inline Parameter& health(){ return mAttribs["health"]; }
+
+  // set / get diability
+  inline const Disability& disability() const { return mDisability; }
+  inline Disability& disability(){ return mDisability; }  
+  // set / get individual disabilities
+  inline const Parameter& fatigue() const { return mDisability["fatigue"]; }
+  inline Parameter& fatigue(){ return mDisability["fatigue"]; }
+  inline const Parameter& stun() const { return mDisability["stun"]; }
+  inline Parameter& stun(){ return mDisability["stun"]; }
+  inline const Parameter& disarm() const { return mDisability["disarm"]; }
+  inline Parameter& disarm(){ return mDisability["disarm"]; }
+  inline const Parameter& fallen() const { return mDisability["fallen"]; }
+  inline Parameter& fallen(){ return mDisability["fallen"]; }
+  inline const Parameter& fatigueTime() const { return mDisability["fatigue-time"]; }
+  inline Parameter& fatigueTime(){ return mDisability["fatigue-time"]; }
+  inline const Parameter& healthTime() const { return mDisability["health-time"]; }
+  inline Parameter& healthTime(){ return mDisability["health-time"]; }
 
   // fight
   int fight(Warrior& other);
 
 private:
-  Parameter mProwess;
-  Parameter mAgility;
-  Parameter mIntelligence;
-  Parameter mPersonality;
-  Parameter mHealth;
+  WarriorAttribs mAttribs;
+  Disability mDisability;
 };
 
 } // end namespace Torpy

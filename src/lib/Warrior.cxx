@@ -13,25 +13,17 @@ namespace Torpy {
 /** Default constructor. */
 Warrior::Warrior(const char* name, const char* title)
   : Named("Warrior", name, title),
-    mProwess("prowess","Prowess", 0., 0., 0. ,100.),
-    mAgility("agility","Agility", 0., 0., 0. ,100.),
-    mIntelligence("intelligence","Intelligence", 0., 0., 0. ,100.),
-    mPersonality("personality","Personality", 0., 0., 0. ,100.),
-    mHealth("health","Health", 0., 0., 0. ,100.)
+    mAttribs(),
+    mDisability()
 {}
 
 //_____________________________________________________________________________
 /** Copy constructor. */
 Warrior::Warrior(const Warrior& other, const char* newName)
   : Named(other,newName), 
-    mProwess(other.mProwess),
-    mAgility(other.mAgility),
-    mIntelligence(other.mIntelligence),
-    mPersonality(other.mPersonality),
-    mHealth(other.mHealth)
-{
-  if(newName && strlen(newName)!=0) setName(newName);
-}
+    mAttribs(other.mAttribs),
+    mDisability(other.mDisability)
+{}
 
 //_____________________________________________________________________________
 /** Cloner. */
@@ -45,11 +37,8 @@ AbsObject* Warrior::clone(const char* newName) const
 Warrior& Warrior::operator=(const Warrior& rhs)
 {
   Named::operator=(rhs);
-  mProwess      = rhs.mProwess;
-  mAgility      = rhs.mAgility;
-  mIntelligence = rhs.mIntelligence;
-  mPersonality  = rhs.mPersonality;
-  mHealth       = rhs.mHealth;
+  mAttribs = rhs.mAttribs;
+  mDisability = rhs.mDisability;
   return *this;
 }
 
@@ -59,22 +48,16 @@ Warrior& Warrior::operator=(const Warrior& rhs)
 */
 bool Warrior::isEmpty() const
 {
-  return (mProwess.isEmpty() &&
-	  mAgility.isEmpty() &&
-	  mIntelligence.isEmpty() &&
-	  mPersonality.isEmpty() &&
-	  mHealth.isEmpty());
+  return (mAttribs.isEmpty() && 
+	  mDisability.isEmpty());
 }
 
 //_____________________________________________________________________________
 /** Set all values to zero. */
 void Warrior::clear()
 {
-  mProwess.clear();
-  mAgility.clear();
-  mIntelligence.clear();
-  mPersonality.clear();
-  mHealth.clear(); 
+  mAttribs.clear();
+  mDisability.clear();
 }
 
 //_____________________________________________________________________________
@@ -88,11 +71,8 @@ bool Warrior::isEqual(const AbsObject& other) const
   if(!w) return false;
 
   // check members
-  return (mProwess      == w->prowess() &&
-	  mAgility      == w->agility() &&
-	  mIntelligence == w->intelligence() &&
-	  mPersonality  == w->Personality() &&
-	  mHealth       == w->health());
+  return (mAttribs == w->attribs() &&
+	  mDisability == w->disability());
 }
 
 //_____________________________________________________________________________
@@ -108,7 +88,7 @@ int Warrior::fight(Warrior& other)
 
   // --------------------------------------------
   // prowess
-  double ourProwess   = random.gaussian(mProwess.value(), mProwess.error());
+  double ourProwess   = random.gaussian(prowess().value(), prowess().error());
   double otherProwess = random.gaussian(other.prowess().value(), other.prowess().error());
   if(ourProwess > otherProwess) return 1;
   else if(ourProwess < otherProwess) return -1;
