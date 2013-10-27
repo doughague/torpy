@@ -42,6 +42,13 @@ public:
   void setRange(double min, double max);
   void range(double& min, double& max);
 
+  // aliases
+  inline bool valueAsBool() const { return (mValue!=0.) ? false : true; }
+  inline void setValueAsBool(bool value) { value ? mValue=1. : mValue=0.; }
+  inline int valueAsInt() const { return int(mValue); }
+  inline void setValueAsInt(int value) { mValue = value; }
+  
+
   // utilities
   inline bool isFree() const { return mMin != mMax; }
   inline bool isFixed() const { return !isFree(); }

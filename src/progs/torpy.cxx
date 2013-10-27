@@ -58,14 +58,14 @@ int main(int /*argc*/, char** /*argv*/)
   w1.prowess().set(60., 5., 0. ,100.);
   w1.agility().set(60., 5., 0. ,100.);
   w1.intelligence().set(60., 5., 0. ,100.);
-  w1.persistence().set(60., 5., 0. ,100.);
+  w1.personality().set(60., 5., 0. ,100.);
   w1.health().set(60., 5., 0. ,100.);
   // Bob
   Warrior w2("Bob", "A weaker Warrior");
   w2.prowess().set(57.5, 5., 0. ,100.);
   w2.agility().set(50., 5., 0. ,100.);
   w2.intelligence().set(50., 5., 0. ,100.);
-  w2.persistence().set(50., 5., 0. ,100.);
+  w2.personality().set(50., 5., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
 
   // --------------------------------------------

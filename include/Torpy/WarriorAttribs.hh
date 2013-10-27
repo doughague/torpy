@@ -11,7 +11,7 @@
 
 namespace Torpy {
 
-/** \class WarriorAttribsAttribs
+/** \class WarriorAttribs
     \brief For holding warrior attributes.
 */
 class WarriorAttribs : public Parameters { 
@@ -21,18 +21,6 @@ public:
   virtual AbsObject* clone(const char* /*newName*/) const;
   virtual WarriorAttribs& operator=(const WarriorAttribs& rhs);
   inline virtual ~WarriorAttribs() { }
-
-  // // set / get
-  // inline const Parameter& prowess() const { return mProwess; }
-  // inline Parameter& prowess(){ return mProwess; }
-  // inline const Parameter& agility() const { return mAgility; }
-  // inline Parameter& agility(){ return mAgility; }
-  // inline const Parameter& intelligence() const { return mIntelligence; }
-  // inline Parameter& intelligence(){ return mIntelligence; }
-  // inline const Parameter& personality() const { return mPersonality; }
-  // inline Parameter& personality(){ return mPersonality; }
-  // inline const Parameter& health() const { return mHealth; }
-  // inline Parameter& health(){ return mHealth; }
 };
 
 } // end namespace Torpy

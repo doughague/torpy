@@ -47,11 +47,15 @@ public:
 
   // set / get
   bool add(const Parameter& parameter);
+  bool add(const char* name, const char* title,
+	   double value = 0., double error = 0.,
+	   double min = 0., double max = 0.);
   bool erase(string parName);
   bool set(const Parameter& parameter);
   const Parameter& parameter(string parName) const;
   const Parameter& operator[](string parName) const;
   Parameter& parameter(string parName);
+  Parameter& operator[](string parName);
 
   // iterators
   inline parIter begin(){ return mPars.begin(); }
@@ -62,9 +66,6 @@ public:
   // search
   bool contains(string parName) const;
   bool contains(const Parameter& parameter) const;
-
-protected:
-  Parameter& operator[](string parName);
 
 private:
   //! Map of parameters

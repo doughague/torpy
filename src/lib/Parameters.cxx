@@ -4,6 +4,7 @@
     \date      03.10.2013
     \copyright See License.txt
 */
+#include "Torpy/LogService.hh"
 #include "Torpy/Exception.hh"
 #include "Torpy/Parameters.hh"
 
@@ -81,19 +82,26 @@ bool Parameters::isEqual(const AbsObject& other) const
 }
 
 //_____________________________________________________________________________
-/** Add a parameter to the end of the list. 
-    \return failed boolean
-*/
+/** Add a parameter to the end of the list. */
 bool Parameters::add(const Parameter& parameter)
 {
   string pn(parameter.name());
   if(mPars.count(pn) == 1){
     loutW(InputArguments) << "Parameters::add: Parameter with name " << pn.c_str() 
-    			  << " already in list." << endl;
+			  << " already in list." << endl;
     return true;    
   }
   mPars[pn] = parameter;
   return false;
+}
+
+//_____________________________________________________________________________
+/** Add a parameter to the end of the list. */
+bool Parameters::add(const char* name, const char* title,
+		     double value, double error,
+		     double min, double max)
+{
+  return add(Parameter(name, title, value, error, min, max));
 }
 
 //_____________________________________________________________________________
