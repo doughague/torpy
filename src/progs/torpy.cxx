@@ -171,7 +171,6 @@ nextround: // the swing-by-swing fight returns here after each swing, unless the
                       tout << " ==> " w1.name() << " hits " << w1.name() << endl;
                       goto nextround;
                   }
-                  goto nextround;
               default: // accounts for errors only. should never show.
                   tout << " ==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight.";
                   break;
