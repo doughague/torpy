@@ -31,20 +31,20 @@ int main(int /*argc*/, char** /*argv*/)
 {
   // --------------------------------------------
   // Welcome the user
-    tout << "*****************************************************************" << endl;
-    tout << "*                 /---\\ | /---\\  /---\\ /---\\    Bleed        *" << endl;
-    tout << "*                 |___/ | |   |  |___/ |___/     Or          *" << endl;
-    tout << "*                 |   \\ | |   |  |   \\ |   \\     Be          *" << endl;
-    tout << "*                 |___/ | \\___/  |___/ |___/     Bled        *" << endl;
-    tout << "*****************************************************************" << endl;
-    tout << "* Copyright (C) 2013  Jason Torpy, Doug Hague                   *" << endl;
-    tout << "*           This program comes with ABSOLUTELY NO WARRANTY.     *" << endl;
-    tout << "*           This is free software, and you are welcome          *" << endl;
-    tout << "*           to redistribute it under the conditions of GNU GPL; *" << endl;
-    tout << "*           see License.txt                                     *" << endl;
-    tout << "*****************************************************************" << endl;
-    
-    // Start time-stamp
+  tout << "*****************************************************************" << endl;
+  tout << "*                 /---\\ /---\\ ----\\ ----\\ \\   /                 *" << endl;
+  tout << "*                   |   |   | |_  | |___/  \\ /                  *" << endl;
+  tout << "*                   |   |   | |  \\  |       |                   *" << endl;
+  tout << "*                   |   \\---/ |   \\ |       |                   *" << endl;
+  tout << "*****************************************************************" << endl;
+  tout << "* Copyright (C) 2013  Jason Torpy, Doug Hague                   *" << endl;
+  tout << "*           This program comes with ABSOLUTELY NO WARRANTY.     *" << endl;
+  tout << "*           This is free software, and you are welcome          *" << endl;
+  tout << "*           to redistribute it under the conditions of GNU GPL; *" << endl;
+  tout << "*           see License.txt                                     *" << endl;
+  tout << "*****************************************************************" << endl;
+
+  // Start time-stamp
   TimeStamp startTime;
   tout << endl;
   tout << "***********************************" << endl;
