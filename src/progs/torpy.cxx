@@ -108,74 +108,76 @@ nextround: // the swing-by-swing fight returns here after each swing, unless the
       else 
 	tout << " ==> " << "Draw" << endl;
     }
+
+    // see comments in other "torpy" file
       
-      // resolve fight by swings
-      if(cmd == "swing"){
-          if((!w1.forf()) && (!w2.forf())) { // forf (fight or flight) should resolve as true or false so this should execute if w1 forf is false and w2 forf is false. So if neither fighter fights, they just circle each other.
-              if(w1.fatigue().value()>=3.){ // if they just circle each other, they recover a bit unless they're not fatigued at all, then it stays at zero.
-                  w1.fatigue().value().set-=3.;
-              }
-              else w1.fatigue().value()=0;
-              if(w2.fatigue().value()>=3.){
-                  w2.fatigue().value().set-=3.;
-              }
-              else w2.fatigue().value()=0;
-          tout << " ==> The two warriors circle each other." << endl;
-              goto nextround;
-          }
-          /* In the if statement above, why can't I use the short form for the if above: w1.fatigue().value()>=3 ? w1.fatigue().value()-=3 : w1.fatigue().value()=0;
-          */
-      // swing results to be expanded below, but simple results are below. Doug: Do I need to initialize the swingresult variable or is it already initialized in the hh file for the fighter class?
-          double swingResult=w1.swing().value()-w2.swing().value(); // the swingresult action is the catch-all for quality and nature of the fighter's attack. At some point it will need to interact with the weapons. This is pulled from the fighter class rather than being treated as an independent action. That seems more realistic.
-          switch(swingResult){ // The switch function goes through every logical swingResult value, assigning damage to the fighter with the lower swingResult accordig to how much lower it is.
-              case <-100.:
-                  if (w1.health().value()<=20) {
-                      tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
-                      break; // if less than 20, the fighter is dead and the fight breaks out to continue outside the fight if statement to close out the fight.
-                  }
-                  else {
-                    w1.health().value()-=20; // reduce health by 20 - just a simple result and then the fight goes back to the next round. if/else order required to ensure value doesn't fall below allowed minimum.
-                    tout << " ==> " w2.name() << " hits " << w1.name() << endl;
-                      goto nextround;
-                  }
-              case <-50.:
-                  if (w1.health().value()<=10) {
-                      tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
-                      break;
-                  }
-                  else {
-                      w1.health().value()-=10;
-                      tout << " ==> " w2.name() << " hits " << w1.name() << endl;
-                      goto nextround;
-                  }
-              case <50.:
-                  tout << " ==> weapons clash and the fight continues.";
-                  goto nextround;
-              case <100.:
-                  if (w2.health().value()<=10) {
-                      tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
-                      break;
-                  }
-                  else {
-                      w2.health().value()-=10;
-                      tout << " ==> " w1.name() << " hits " << w1.name() << endl;
-                      goto nextround;
-                  }
-              case >=100.:
-                  if (w2.health().value()<=20) {
-                      tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
-                      break;
-                  }
-                  else {
-                      w2.health().value()-=20;
-                      tout << " ==> " w1.name() << " hits " << w1.name() << endl;
-                      goto nextround;
-                  }
-              default: // accounts for errors only. should never show.
-                  tout << " ==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight.";
-                  break;
-          } // swing result switch
-      } // swing command
+      // // resolve fight by swings
+      // if(cmd == "swing"){
+      //     if((!w1.forf()) && (!w2.forf())) { // forf (fight or flight) should resolve as true or false so this should execute if w1 forf is false and w2 forf is false. So if neither fighter fights, they just circle each other.
+      //         if(w1.fatigue().value()>=3.){ // if they just circle each other, they recover a bit unless they're not fatigued at all, then it stays at zero.
+      //             w1.fatigue().value().set-=3.;
+      //         }
+      //         else w1.fatigue().value()=0;
+      //         if(w2.fatigue().value()>=3.){
+      //             w2.fatigue().value().set-=3.;
+      //         }
+      //         else w2.fatigue().value()=0;
+      //     tout << " ==> The two warriors circle each other." << endl;
+      //         goto nextround;
+      //     }
+      //     /* In the if statement above, why can't I use the short form for the if above: w1.fatigue().value()>=3 ? w1.fatigue().value()-=3 : w1.fatigue().value()=0;
+      //     */
+      // // swing results to be expanded below, but simple results are below. Doug: Do I need to initialize the swingresult variable or is it already initialized in the hh file for the fighter class?
+      //     double swingResult=w1.swing().value()-w2.swing().value(); // the swingresult action is the catch-all for quality and nature of the fighter's attack. At some point it will need to interact with the weapons. This is pulled from the fighter class rather than being treated as an independent action. That seems more realistic.
+      //     switch(swingResult){ // The switch function goes through every logical swingResult value, assigning damage to the fighter with the lower swingResult accordig to how much lower it is.
+      //         case <-100.:
+      //             if (w1.health().value()<=20) {
+      //                 tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
+      //                 break; // if less than 20, the fighter is dead and the fight breaks out to continue outside the fight if statement to close out the fight.
+      //             }
+      //             else {
+      //               w1.health().value()-=20; // reduce health by 20 - just a simple result and then the fight goes back to the next round. if/else order required to ensure value doesn't fall below allowed minimum.
+      //               tout << " ==> " w2.name() << " hits " << w1.name() << endl;
+      //                 goto nextround;
+      //             }
+      //         case <-50.:
+      //             if (w1.health().value()<=10) {
+      //                 tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
+      //                 break;
+      //             }
+      //             else {
+      //                 w1.health().value()-=10;
+      //                 tout << " ==> " w2.name() << " hits " << w1.name() << endl;
+      //                 goto nextround;
+      //             }
+      //         case <50.:
+      //             tout << " ==> weapons clash and the fight continues.";
+      //             goto nextround;
+      //         case <100.:
+      //             if (w2.health().value()<=10) {
+      //                 tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
+      //                 break;
+      //             }
+      //             else {
+      //                 w2.health().value()-=10;
+      //                 tout << " ==> " w1.name() << " hits " << w1.name() << endl;
+      //                 goto nextround;
+      //             }
+      //         case >=100.:
+      //             if (w2.health().value()<=20) {
+      //                 tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
+      //                 break;
+      //             }
+      //             else {
+      //                 w2.health().value()-=20;
+      //                 tout << " ==> " w1.name() << " hits " << w1.name() << endl;
+      //                 goto nextround;
+      //             }
+      //         default: // accounts for errors only. should never show.
+      //             tout << " ==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight.";
+      //             break;
+      //     } // swing result switch
+      // } // swing command
 
       
   } // while cmd not quit
