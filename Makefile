@@ -8,7 +8,7 @@
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Platform ------------------------------------------------------
 # choose: linux, macos, win, arm
-Platform = linux
+Platform = macos
 # Architecture --------------------------------------------------
 # choose: 0 for 32-bit, 1 for 64-bit
 Is64bit = 1

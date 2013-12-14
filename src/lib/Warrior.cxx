@@ -96,42 +96,48 @@ int Warrior::fight(Warrior& other)
 }
     
 //_____________________________________________________________________________
-/** This warrior determines its fight action.
- This breaks down to basic attack or defense.
- \return true or false.
+/** establish fight-or-flight; decided whether the warrior will attack or defend.
+ \return result true or false.
  */
-bool Warrior::forf()
+double Warrior::forf()
 {
     // --------------------------------------------
-    // initialize random number generator
+    // initialize random number generator.
     Random random;
-    
+
     // --------------------------------------------
-    // attack based on personality and personal status, only for this warrior.
-    double ourForF   = random.gaussian(50., prowess().error())+personality().value(); // should be a random number from 1-100 minus a personality value which is also 1-100.
-    int cur_dis = stun().value()+disarm().value()+fallen().value(); // may need to initialize variable, and translate to double.
-    ourForF = ourForF - 20.*cur_dis; // reduce likelihood of attack for each disability
-    if(ourForF > 50) return true; // true = attacking
-    else return false; // false = defending
+    // assess level of disability and apply to personality to determine willingness to attack.
+    double cur_dis = stun().value()+disarm().value()+fallen().value();
+    double thisForF = random.gaussian(personality().value(), personality().error())-(cur_dis*20.);
+    
+    if(thisForF > 55.) return true; // 55 will split.
+    else return false;
 }
-
+    
 //_____________________________________________________________________________
-/** This warrior takes a swing or other attack action.
- This provides basic attack quality to be compared against opponent(s).
- \return result attack quality.
- */
-
+/** determine quality of attack action.
+\return result quantity.
+*/
 double Warrior::swing()
 {
     // --------------------------------------------
-    // initialize random number generator
+    // initialize random number generator.
     Random random;
     
     // --------------------------------------------
-    // prowess
-    double swingQual   = random.gaussian(prowess().value(), prowess().error())*3+agility().value()+intelligence().value()+(100.-fatigue().value()); // triple prowess + agility and intel less fatigue.
+    // use attributes including fatigue and disabilities to determine quality of attack
+    double swingQual   = random.gaussian(prowess().value(), prowess().error())*3+random.gaussian(agility().value(), agility().error())+random.gaussian(intelligence().value(), intelligence().error())-fatigue().value(); // triple prowess + agility and intel less fatigue.
     return swingQual;
 }
+
+double Warrior::recover() // need to bring in a number to decrement by and a warrior to use it.
+{
+    // --------------------------------------------
+    // change attribute values based on input.
+    return 3.;
+
+}
+    
     
 } // end namespace Torpy
 

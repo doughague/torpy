@@ -55,20 +55,20 @@ int main(int /*argc*/, char** /*argv*/)
   // Initialize warriors
   // Alice
   Warrior w1("Alice", "A stronger Warrior");
-  w1.prowess().set(60., 20., 0. ,100.);
-  w1.agility().set(60., 15., 0. ,100.);
+  w1.prowess().set(60., 5., 0. ,100.);
+  w1.agility().set(60., 5., 0. ,100.);
   w1.intelligence().set(60., 5., 0. ,100.);
-  w1.personality().set(60., 10., 0. ,100.);
+  w1.personality().set(60., 5., 0. ,100.);
   w1.health().set(60., 5., 0. ,100.);
   // Bob
   Warrior w2("Bob", "A weaker Warrior");
-  w2.prowess().set(57.5, 20., 0. ,100.);
-  w2.agility().set(50., 15., 0. ,100.);
+  w2.prowess().set(57.5, 5., 0. ,100.);
+  w2.agility().set(50., 5., 0. ,100.);
   w2.intelligence().set(50., 5., 0. ,100.);
-  w2.personality().set(50., 10., 0. ,100.);
+  w2.personality().set(50., 5., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
     
-// nextround: // the swing-by-swing fight returns here after each swing, unless the fight is over, assuming I've used the 'goto' function properly.
+nextround: // the swing-by-swing fight returns here after each swing, unless the fight is over, assuming I've used the 'goto' function properly.
 
   // --------------------------------------------
   // Print warrior info
@@ -85,7 +85,6 @@ int main(int /*argc*/, char** /*argv*/)
   tout << "***********************************" << endl;
   tout << "Commands: " << endl;
   tout << "  fight:  Have " << w1.name() << " fight " << w2.name() << "." << endl;
-    tout << "  swing:  Pit " << w1.name() << " against " << w2.name() <<"." << endl;
   tout << "  quit:  Quit the game and exit." << endl;
   tout << "***********************************" << endl;
 
@@ -109,53 +108,27 @@ int main(int /*argc*/, char** /*argv*/)
       else 
 	tout << " ==> " << "Draw" << endl;
     }
- 
-    if(cmd == "swing"){
-        tout << "fightorflight ==> " << endl;
-        !w1.forf() ? tout << "1 will attack." << endl : tout << "1 will defend." << endl;
-        !w2.forf() ? tout << "2 will attack." << endl : tout << "2 will defend." << endl;
-        
-        tout << "clash ==> " << endl;
-        if(!w1.forf() && !w2.forf()){
-            tout << "warriors circle each other" << endl;
-         //   w1.fatigue().value()-=3;
-         //   w2.fatigue().value()=w2.fatigue().value()-3;
-            tout << "1's less fatigued now : " << w1.fatigue().value() << endl;
-            tout << "2's less fatigued now : " << w1.fatigue().value() << endl;
-        }
-        tout << w1.name() << ": " << w1.swing() << ", " << w2.name() << ": " << w2.swing() << endl;
-        
-        double swingResult=w1.swing()-w2.swing();
 
-        tout << "swing result: " << swingResult << endl;
-        
-        if(swingResult<-100){
-            tout << w2.name() << " deals a grievous blow." << endl;
-            // health -20, fatigue-5 per round?
-            }
-        else if(swingResult<-50){
-            tout << w2.name() << " deals a serious blow." << endl;
-            // health -10, fatigue-5
-        }
-        else if(swingResult<50){
-            tout << "Weapons clash as the warriors look for an opening." << endl;
-            // increase fatigue for both
-        }
-        else if(swingResult<100){
-            tout << w1.name() << " deals a serious blow." << endl;
-            // health -10, fatigue-5
-        }
-        else if(swingResult>=100){
-            tout << w1.name() << " deals a grievous blow." << endl;
-            // health -20, health -5 per round, fatigue-5 per round
-        }
-        else tout << "the demons have intervened." << endl;
-        
-        tout << "awaiting next round." << endl;
-        
-    }
+    // see comments in other "torpy" file
       
-
+      // // resolve fight by swings
+      // if(cmd == "swing"){
+      //     if((!w1.forf()) && (!w2.forf())) { // forf (fight or flight) should resolve as true or false so this should execute if w1 forf is false and w2 forf is false. So if neither fighter fights, they just circle each other.
+      //         if(w1.fatigue().value()>=3.){ // if they just circle each other, they recover a bit unless they're not fatigued at all, then it stays at zero.
+      //             w1.fatigue().value().set-=3.;
+      //         }
+      //         else w1.fatigue().value()=0;
+      //         if(w2.fatigue().value()>=3.){
+      //             w2.fatigue().value().set-=3.;
+      //         }
+      //         else w2.fatigue().value()=0;
+      //     tout << " ==> The two warriors circle each other." << endl;
+      //         goto nextround;
+      //     }
+      //     /* In the if statement above, why can't I use the short form for the if above: w1.fatigue().value()>=3 ? w1.fatigue().value()-=3 : w1.fatigue().value()=0;
+      //     */
+      // // swing results to be expanded below, but simple results are below. Doug: Do I need to initialize the swingresult variable or is it already initialized in the hh file for the fighter class?
+      //     double swingResult=w1.swing().value()-w2.swing().value(); // the swingresult action is the catch-all for quality and nature of the fighter's attack. At some point it will need to interact with the weapons. This is pulled from the fighter class rather than being treated as an independent action. That seems more realistic.
       //     switch(swingResult){ // The switch function goes through every logical swingResult value, assigning damage to the fighter with the lower swingResult accordig to how much lower it is.
       //         case <-100.:
       //             if (w1.health().value()<=20) {
@@ -211,6 +184,6 @@ int main(int /*argc*/, char** /*argv*/)
 
   // --------------------------------------------
   // clean & return
-  //return 0;
+  return 0;
 }
 

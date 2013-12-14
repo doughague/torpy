@@ -64,9 +64,11 @@ public:
   // fight
   int fight(Warrior& other);
     // choice of attacking - fight or flight
-    bool forf();
+    double forf();
     // attack action
     double swing();
+    // recover after a rest
+    double recover();
 
 private:
   WarriorAttribs mAttribs;
