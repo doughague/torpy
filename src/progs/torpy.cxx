@@ -9,7 +9,7 @@
 #include "Torpy/Warrior.hh"
 
 namespace Torpy {
-static const string kPrefix = "[torpy]";
+static const string kPrefix = "[BloBB]";
 #define tout cout << kPrefix.c_str() << ">  "
 }
 
@@ -32,8 +32,8 @@ int main(int /*argc*/, char** /*argv*/)
   // --------------------------------------------
   // Welcome the user
     tout << "*****************************************************************" << endl;
-    tout << "*                 /---\\ | /---\\  /---\\ /---\\    Bleed        *" << endl;
-    tout << "*                 |___/ | |   |  |___/ |___/     Or          *" << endl;
+    tout << "*                 /---\\ |        /---\\ /---\\    Bleed        *" << endl;
+    tout << "*                 |___/ | /---\\  |___/ |___/     or          *" << endl;
     tout << "*                 |   \\ | |   |  |   \\ |   \\     Be          *" << endl;
     tout << "*                 |___/ | \\___/  |___/ |___/     Bled        *" << endl;
     tout << "*****************************************************************" << endl;
@@ -84,8 +84,8 @@ int main(int /*argc*/, char** /*argv*/)
   tout << endl;
   tout << "***********************************" << endl;
   tout << "Commands: " << endl;
-  tout << "  fight:  Have " << w1.name() << " fight " << w2.name() << "." << endl;
-    tout << "  swing:  Pit " << w1.name() << " against " << w2.name() <<"." << endl;
+  tout << "  fight: Have " << w1.name() << " fight " << w2.name() << "." << endl;
+    tout << "  swing: Pit " << w1.name() << " against " << w2.name() <<"." << endl;
   tout << "  quit:  Quit the game and exit." << endl;
   tout << "***********************************" << endl;
 
@@ -124,6 +124,16 @@ int main(int /*argc*/, char** /*argv*/)
             tout << "2's less fatigued now : " << w1.fatigue().value() << endl;
         }
         tout << w1.name() << ": " << w1.swing() << ", " << w2.name() << ": " << w2.swing() << endl;
+        
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
+        tout << "swings =>" << w1.swing() << endl;
         
         double swingResult=w1.swing()-w2.swing();
 

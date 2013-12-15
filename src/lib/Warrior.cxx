@@ -102,9 +102,10 @@ int Warrior::fight(Warrior& other)
 double Warrior::forf()
 {
     // --------------------------------------------
-    // initialize random number generator.
+    // re-initialize random number generator on each run. Doug: random.cxx seems to produce the same random number every time. Can you check?
     Random random;
-
+    random.seed();
+    
     // --------------------------------------------
     // assess level of disability and apply to personality to determine willingness to attack.
     double cur_dis = stun().value()+disarm().value()+fallen().value();
@@ -123,10 +124,12 @@ double Warrior::swing()
     // --------------------------------------------
     // initialize random number generator.
     Random random;
-    
+    random.seed();
+
     // --------------------------------------------
     // use attributes including fatigue and disabilities to determine quality of attack
-    double swingQual   = random.gaussian(prowess().value(), prowess().error())*3+random.gaussian(agility().value(), agility().error())+random.gaussian(intelligence().value(), intelligence().error())-fatigue().value(); // triple prowess + agility and intel less fatigue.
+ //   double swingQual = random.gaussian(prowess().value(), prowess().error())*3+random.gaussian(agility().value(), agility().error())+random.gaussian(intelligence().value(), intelligence().error())-fatigue().value(); // triple prowess + agility and intel less fatigue.
+    double swingQual=random.basic(prowess().value(),prowess().error());
     return swingQual;
 }
 
@@ -135,7 +138,6 @@ double Warrior::recover() // need to bring in a number to decrement by and a war
     // --------------------------------------------
     // change attribute values based on input.
     return 3.;
-
 }
     
     
