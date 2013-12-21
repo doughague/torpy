@@ -300,19 +300,6 @@ double Random::powerlaw(double xmin, double gamma) const
   else return 0.;
 }
 
-<<<<<<< HEAD
-//_____________________________________________________________________________
-/** An Power-Law random variate:
-Simple random distribution around a mean, plus or minus given range.
- */
-double Random::basic(double mean, int range) const
-{
-    srand ( (unsigned) time(NULL) );
-    tout << "mean-" << mean << ", range-" << range << ", rand-"<< rand() << endl;
-    if(range==0) return mean;
-    else return mean - range + 2*(rand() % range);
-}
-=======
 // //_____________________________________________________________________________
 // /** An Power-Law random variate:
 // Simple random distribution around a mean, plus or minus given range.
@@ -323,7 +310,6 @@ double Random::basic(double mean, int range) const
 //     if(range==0) return mean;
 //     else return mean - range + (rand() % range);
 // }
->>>>>>> d4b53515e11a1c8aabb16ea56603ec6e69a166ec
 
     
 } // end namespace Torpy
