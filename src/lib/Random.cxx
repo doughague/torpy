@@ -10,9 +10,9 @@
 
 namespace Torpy {
 
-    // tout for test purposes
-    static const string kPrefix = "[BloBB]";
-#define tout cout << kPrefix.c_str() << ">  "
+//     // tout for test purposes
+//     static const string kPrefix = "[BloBB]";
+// #define tout cout << kPrefix.c_str() << ">  "
 
     
 //_____________________________________________________________________________
@@ -27,7 +27,8 @@ const unsigned int Random::mRandMax = RAND_MAX;
 
 //_____________________________________________________________________________
 /** Default constructor. 
-    Default argument, seed = 0, seeds the random number generator to value to local "now" time.
+    Default argument, seed = 0, seeds the random number generator 
+    to value to local "now" time.
  */
 Random::Random(unsigned int seed)
   : AbsObject("Random"),
@@ -196,22 +197,20 @@ double Random::gaussian(double mean, double sigma) const
 
   double result;
   double rn,x,y,z;
-tout<<"random access==>";//test
   do {
     y = rndm();
-      tout<<"y"<<y;//test
     if (y>kHm1) {
       result = kHp*y-kHp1; break; }
   
     else if (y<kZm) {  
-      rn = kZp*y-1;tout<<"rna"<<rn;//test
+      rn = kZp*y-1;
       result = (rn>0) ? (1+rn) : (-1+rn);
       break;
     } 
 
     else if (y<kHm) {  
-        rn = rndm();tout<<"rnb1-"<<rn;//test
-        rn = rn-1+rn;tout<<"rnb2-"<<rn;//test
+        rn = rndm();
+        rn = rn-1+rn;
       z = (rn>0) ? 2-rn : -2-rn;
       if ((kC1-y)*(kC3+Math::Abs(z))<kC2) {
 	result = z; break; }
@@ -244,7 +243,6 @@ tout<<"random access==>";//test
 	  result = rn; break; }
     }
   } while(0);
-    tout<<mean<<"+"<<sigma<<"*"<<result<<endl;
   return mean + sigma * result;
 }
 
@@ -302,17 +300,16 @@ double Random::powerlaw(double xmin, double gamma) const
   else return 0.;
 }
 
-//_____________________________________________________________________________
-/** An Power-Law random variate:
-Simple random distribution around a mean, plus or minus given range.
- */
-double Random::basic(double mean, int range) const
-{
-    srand ( (unsigned) time(NULL) );
-    tout << "mean-" << mean << ", range-" << range << ", rand-"<< rand() << endl;
-    if(range==0) return mean;
-    else return mean - range + (rand() % range);
-}
+// //_____________________________________________________________________________
+// /** An Power-Law random variate:
+// Simple random distribution around a mean, plus or minus given range.
+//  */
+// double Random::basic(double mean, int range) const
+// {
+//     srand ( (unsigned) time(NULL) );
+//     if(range==0) return mean;
+//     else return mean - range + (rand() % range);
+// }
 
     
 } // end namespace Torpy

@@ -42,7 +42,6 @@ public:
   double gaussian(double mean = 0., double sigma = 1.) const;
   double poisson(double mean = 1.) const;
   double powerlaw(double xmin = 1., double gamma = 2.) const;
-  double basic(double mean=0.,int range=1.) const; // default
     
 private:
   //! Seed for the random number generator
