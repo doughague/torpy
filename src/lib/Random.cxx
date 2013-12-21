@@ -311,7 +311,7 @@ double Random::basic(double mean, int range) const
     srand ( (unsigned) time(NULL) );
     tout << "mean-" << mean << ", range-" << range << ", rand-"<< rand() << endl;
     if(range==0) return mean;
-    else return mean - range + (rand() % range);
+    else return mean - range + 2*(rand() % range);
 }
 
     
