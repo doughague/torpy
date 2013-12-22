@@ -14,7 +14,8 @@ namespace Torpy {
 Warrior::Warrior(const char* name, const char* title)
   : Named("Warrior", name, title),
     mAttribs(),
-    mDisability()
+    mDisability(),
+    mRandom()
 {}
 
 //_____________________________________________________________________________
@@ -22,7 +23,8 @@ Warrior::Warrior(const char* name, const char* title)
 Warrior::Warrior(const Warrior& other, const char* newName)
   : Named(other,newName), 
     mAttribs(other.mAttribs),
-    mDisability(other.mDisability)
+    mDisability(other.mDisability),
+    mRandom(other.mRandom)
 {}
 
 //_____________________________________________________________________________
@@ -37,8 +39,9 @@ AbsObject* Warrior::clone(const char* newName) const
 Warrior& Warrior::operator=(const Warrior& rhs)
 {
   Named::operator=(rhs);
-  mAttribs = rhs.mAttribs;
+  mAttribs    = rhs.mAttribs;
   mDisability = rhs.mDisability;
+  mRandom     = rhs.mRandom;
   return *this;
 }
 
@@ -58,6 +61,7 @@ void Warrior::clear()
 {
   mAttribs.clear();
   mDisability.clear();
+  mRandom.clear();
 }
 
 //_____________________________________________________________________________
@@ -83,13 +87,9 @@ bool Warrior::isEqual(const AbsObject& other) const
 int Warrior::fight(Warrior& other)
 {
   // --------------------------------------------
-  // initialize random number generator
-  Random random;
-
-  // --------------------------------------------
   // prowess
-  double ourProwess   = random.gaussian(prowess().value(), prowess().error());
-  double otherProwess = random.gaussian(other.prowess().value(), other.prowess().error());
+  double ourProwess   = mRandom.gaussian(prowess().value(), prowess().error());
+  double otherProwess = mRandom.gaussian(other.prowess().value(), other.prowess().error());
   if(ourProwess > otherProwess) return 1;
   else if(ourProwess < otherProwess) return -1;
   else return 0;
@@ -97,47 +97,42 @@ int Warrior::fight(Warrior& other)
     
 //_____________________________________________________________________________
 /** establish fight-or-flight; decided whether the warrior will attack or defend.
- \return result true or false.
- */
-double Warrior::forf()
+    \return result true or false.
+*/
+bool Warrior::forf()
 {
-    // --------------------------------------------
-    // re-initialize random number generator on each run. Doug: random.cxx seems to produce the same random number every time. Can you check?
-    Random random;
-    random.seed();
-    
-    // --------------------------------------------
-    // assess level of disability and apply to personality to determine willingness to attack.
-    double cur_dis = stun().value()+disarm().value()+fallen().value();
-    double thisForF = random.gaussian(personality().value(), personality().error())-(cur_dis*20.);
-    
-    if(thisForF > 55.) return true; // 55 will split.
-    else return false;
+  // --------------------------------------------
+  // assess level of disability and apply to personality to determine willingness to attack.
+  double cur_dis = stun().value()+disarm().value()+fallen().value();
+  double thisForF = mRandom.gaussian(personality().value(), personality().error())-(cur_dis*20.);
+
+  // Jason: Be careful, the function signature was expecting you to return a double,
+  // but you're returning a boolean. this can lead to undefined behavior.
+  if(thisForF > 55.) return true; // 55 will split.
+  else return false;
 }
     
 //_____________________________________________________________________________
 /** determine quality of attack action.
-\return result quantity.
+    \return result quantity.
 */
 double Warrior::swing()
 {
-    // --------------------------------------------
-    // initialize random number generator.
-    Random random;
-    random.seed();
-
-    // --------------------------------------------
-    // use attributes including fatigue and disabilities to determine quality of attack
-    // triple prowess + agility and intel less fatigue.
-    double swingQual = random.gaussian(prowess().value(), prowess().error())*3 + 
-      random.gaussian(agility().value(), agility().error()) + 
-      random.gaussian(intelligence().value(), intelligence().error()) - 
-      fatigue().value(); 
-    // double swingQual=random.basic(prowess().value(),prowess().error());
-    return swingQual;
+  // --------------------------------------------
+  // use attributes including fatigue and disabilities to determine quality of attack
+  // triple prowess + agility and intel less fatigue.
+  double swingQual = mRandom.gaussian(prowess().value(), prowess().error())*3 + 
+                     mRandom.gaussian(agility().value(), agility().error()) + 
+                     mRandom.gaussian(intelligence().value(), intelligence().error()) - 
+                     fatigue().value(); 
+  return swingQual;
 }
 
-double Warrior::recover() // need to bring in a number to decrement by and a warrior to use it.
+//_____________________________________________________________________________
+/** ... need to bring in a number to decrement by and a warrior to use it ... 
+    \return some kind of double
+*/
+double Warrior::recover() // 
 {
     // --------------------------------------------
     // change attribute values based on input.

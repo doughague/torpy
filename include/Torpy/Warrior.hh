@@ -10,6 +10,7 @@
 #include "Torpy/Named.hh"           // mother class
 #include "Torpy/WarriorAttribs.hh"  // warrior attributes
 #include "Torpy/Disability.hh"      // warrior disabilityies
+#include "Torpy/Random.hh"          // random number helper
 
 namespace Torpy {
 
@@ -63,16 +64,17 @@ public:
 
   // fight
   int fight(Warrior& other);
-    // choice of attacking - fight or flight
-    double forf();
-    // attack action
-    double swing();
-    // recover after a rest
-    double recover();
+  // choice of attacking - fight or flight
+  bool forf();
+  // attack action
+  double swing();
+  // recover after a rest
+  double recover();
 
 private:
   WarriorAttribs mAttribs;
   Disability mDisability;
+  Random mRandom;
 };
 
 } // end namespace Torpy
