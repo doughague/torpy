@@ -4,7 +4,6 @@
     \date      24.07.2013
     \copyright See License.txt
 */
-#include "Torpy/Random.hh"   // random numbers
 #include "Torpy/Warrior.hh"  // this class
 
 namespace Torpy {
@@ -107,7 +106,8 @@ bool Warrior::forf()
   double thisForF = mRandom.gaussian(personality().value(), personality().error())-(cur_dis*20.);
 
   // Jason: Be careful, the function signature was expecting you to return a double,
-  // but you're returning a boolean. this can lead to undefined behavior.
+  // but you're returning a boolean. 
+  // fixed, but this could have lead to undefined behavior.
   if(thisForF > 55.) return true; // 55 will split.
   else return false;
 }

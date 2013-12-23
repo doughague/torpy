@@ -32,10 +32,10 @@ int main(int /*argc*/, char** /*argv*/)
   // --------------------------------------------
   // Welcome the user
   tout << "*****************************************************************" << endl;
-  tout << "*                 /---\\ |        /---\\ /---\\    Bleed        *" << endl;
-  tout << "*                 |___/ | /---\\  |___/ |___/     or          *" << endl;
-  tout << "*                 |   \\ | |   |  |   \\ |   \\     Be          *" << endl;
-  tout << "*                 |___/ | \\___/  |___/ |___/     Bled        *" << endl;
+  tout << "*                 /---\\ |        /---\\ /---\\     Bleed          *" << endl;
+  tout << "*                 |___/ | /---\\  |___/ |___/     or             *" << endl;
+  tout << "*                 |   \\ | |   |  |   \\ |   \\     Be             *" << endl;
+  tout << "*                 |___/ | \\___/  |___/ |___/     Bled           *" << endl;
   tout << "*****************************************************************" << endl;
   tout << "* Copyright (C) 2013  Jason Torpy, Doug Hague                   *" << endl;
   tout << "*           This program comes with ABSOLUTELY NO WARRANTY.     *" << endl;
@@ -47,14 +47,20 @@ int main(int /*argc*/, char** /*argv*/)
   // Start time-stamp
   TimeStamp startTime;
   tout << endl;
-  tout << "***********************************" << endl;
-  tout << "It's " << startTime.asDescription() << endl;
-  tout << "***********************************" << endl;
+  tout << "*****************************************************************" << endl;
+  tout << "It's " << startTime.asDescription() << " (" << startTime.uts() << " UTS)" << endl;
+  tout << "*****************************************************************" << endl;
+
+  // --------------------------------------------
+  // Initialize/seed our "global" random number generator 
+  // with the program start time
+  Random globalRand(startTime.uts());
 
   // --------------------------------------------
   // Initialize warriors
   // Alice
   Warrior w1("Alice", "A stronger Warrior");
+  w1.setRandom(globalRand);
   w1.prowess().set(60., 20., 0. ,100.);
   w1.agility().set(60., 15., 0. ,100.);
   w1.intelligence().set(60., 5., 0. ,100.);
@@ -62,6 +68,7 @@ int main(int /*argc*/, char** /*argv*/)
   w1.health().set(60., 5., 0. ,100.);
   // Bob
   Warrior w2("Bob", "A weaker Warrior");
+  w2.setRandom(globalRand);
   w2.prowess().set(57.5, 20., 0. ,100.);
   w2.agility().set(50., 15., 0. ,100.);
   w2.intelligence().set(50., 5., 0. ,100.);
@@ -137,7 +144,7 @@ int main(int /*argc*/, char** /*argv*/)
       tout << "swings =>" << w1.swing() << endl;
       tout << "swings =>" << w1.swing() << endl;
         
-      double swingResult=w1.swing()-w2.swing();
+      double swingResult = w1.swing() - w2.swing();
 
       tout << "swing result: " << swingResult << endl;
         

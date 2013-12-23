@@ -62,6 +62,13 @@ public:
   inline const Parameter& healthTime() const { return mDisability["health-time"]; }
   inline Parameter& healthTime(){ return mDisability["health-time"]; }
 
+  // random helpers
+  inline void setRandom(const Random& r){ mRandom = r; }
+  inline const Random& getRandom(){ return mRandom; }
+
+  //
+  // Action methods
+  //
   // fight
   int fight(Warrior& other);
   // choice of attacking - fight or flight

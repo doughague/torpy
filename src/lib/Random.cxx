@@ -9,11 +9,6 @@
 #include "Torpy/Random.hh"  // this class
 
 namespace Torpy {
-
-//     // tout for test purposes
-//     static const string kPrefix = "[BloBB]";
-// #define tout cout << kPrefix.c_str() << ">  "
-
     
 //_____________________________________________________________________________
 /** The maximum integer returned by the std::rand function.
