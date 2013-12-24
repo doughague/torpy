@@ -105,14 +105,7 @@ bool Warrior::forf()
   double cur_dis = stun().value()+disarm().value()+fallen().value();
   double thisForF = mRandom.gaussian(personality().value(), personality().error())-(cur_dis*20.);
 
-<<<<<<< HEAD
   if(thisForF > 55.) return true; // 55 will split in the current example.
-=======
-  // Jason: Be careful, the function signature was expecting you to return a double,
-  // but you're returning a boolean. 
-  // fixed, but this could have lead to undefined behavior.
-  if(thisForF > 55.) return true; // 55 will split.
->>>>>>> def3a492c5fe5028eb9997d92210f213a0d51cf2
   else return false;
 }
     
