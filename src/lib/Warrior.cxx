@@ -105,7 +105,7 @@ bool Warrior::forf()
   double cur_dis = stun().value()+disarm().value()+fallen().value();
   double thisForF = mRandom.gaussian(personality().value(), personality().error())-(cur_dis*20.);
 
-  if(thisForF > 55.) return true; // 55 will split in the current example.
+  if(thisForF > 55.) return true; // true means attack
   else return false;
 }
     

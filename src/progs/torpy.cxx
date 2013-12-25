@@ -118,113 +118,80 @@ int main(int /*argc*/, char** /*argv*/)
       else 
 	tout << " ==> " << "Draw" << endl;
     }
- 
+    // have a specific fight
     if(cmd == "swing"){
-      tout << "fightorflight ==> " << endl;
-      !w1.forf() ? tout << "1 will attack." << endl : tout << "1 will defend." << endl;
-      !w2.forf() ? tout << "2 will attack." << endl : tout << "2 will defend." << endl;
+    // deterine if attacking or not
+      tout << "fightorflight ==> " << w1.forf() << w2.forf() << endl; // test only forf numbers
+      !w1.forf() ? tout << "1 will defend." << endl : tout << "1 will attack." << endl;
+      !w2.forf() ? tout << "2 will defend." << endl : tout << "2 will attack." << endl;
         
-      tout << "clash ==> " << endl;
-      if(!w1.forf() && !w2.forf()){
-	tout << "warriors circle each other" << endl;
-	//   w1.fatigue().value()-=3;
-	//   w2.fatigue().value()=w2.fatigue().value()-3;
-	tout << "1's less fatigued now : " << w1.fatigue().value() << endl;
-	tout << "2's less fatigued now : " << w1.fatigue().value() << endl;
-      }
-      tout << w1.name() << ": " << w1.swing() << ", " << w2.name() << ": " << w2.swing() << endl;
-        
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-      tout << "swings =>" << w1.swing() << endl;
-        
-      double swingResult = w1.swing() - w2.swing();
+      if(!w1.forf() && !w2.forf()){ // if neither w attacks, no action, just minimal fatigue increase.
+          tout << "warriors circle each other ==>" << endl;
+          
+          w1.fatigue().setValue(w1.fatigue().value()+3);
+          w2.fatigue().setValue(w2.fatigue().value()+3);
+          
+          tout << "1 is getting fatigued : " << w1.fatigue().value() << endl;
+          tout << "2 is getting fatigued : " << w2.fatigue().value() << endl;
+      } // both defending
+      // if not both defending, then execute fight.
+      else {
+          tout << "clash ==> " << endl;
+
+      tout << w1.name() << ": " << w1.swing() << " vs " << w2.name() << ": " << w2.swing() << endl;
+
+          double swingResult = w1.swing() - w2.swing();
 
       tout << "swing result: " << swingResult << endl;
-        
+      // after calculating swingresult, resolve damage
       if(swingResult<-100){
 	tout << w2.name() << " deals a grievous blow." << endl;
-	// health -20, fatigue-5 per round?
+          tout << w1.health().value() << ", " << w1.fatigue().value();
+          w1.health().setValue(w1.health().value()-20);// add 5 per round
+          w1.fatigue().setValue(w1.fatigue().value()+20);//should be 5 per round
+          tout << w1.health().value() << ", " << w1.fatigue().value();
+          tout << "<-100"; //test
       }
       else if(swingResult<-50){
 	tout << w2.name() << " deals a serious blow." << endl;
-	// health -10, fatigue-5
+          tout << w1.health().value() << ", " << w1.fatigue().value();
+          w1.health().setValue(w1.health().value()-10);
+          w1.fatigue().setValue(w1.fatigue().value()+10);
+          tout << w1.health().value() << ", " << w1.fatigue().value();
+          tout << "<-50"; //test
       }
       else if(swingResult<50){
 	tout << "Weapons clash as the warriors look for an opening." << endl;
-	// increase fatigue for both
+          w1.fatigue().setValue(w1.fatigue().value()+6);
+          w2.fatigue().setValue(w2.fatigue().value()+6);
+          tout << "<50"; //test
       }
       else if(swingResult<100){
 	tout << w1.name() << " deals a serious blow." << endl;
-	// health -10, fatigue-5
+          tout << w2.health().value() << ", " << w2.fatigue().value();
+          w2.health().setValue(w2.health().value()-10);
+          w2.fatigue().setValue(w2.fatigue().value()+10);
+          tout << w2.health().value() << ", " << w2.fatigue().value();
+          tout << "<100"; //test
       }
       else if(swingResult>=100){
 	tout << w1.name() << " deals a grievous blow." << endl;
-	// health -20, health -5 per round, fatigue-5 per round
+          tout << w2.health().value() << ", " << w2.fatigue().value();
+          w2.health().setValue(w2.health().value()-20);// add 5 per round
+          w2.fatigue().setValue(w2.fatigue().value()+20);//should be 5 per round
+          tout << w2.health().value() << ", " << w2.fatigue().value();
+          tout << ">=100"; //test
       }
-      else tout << "the demons have intervened." << endl;
+      else tout << "==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight." << endl; // error message only
         
-      tout << "awaiting next round." << endl;
-        
-    }
+      tout << endl << "Awaiting next round." << endl;
+     
+        } // not both defending
+
+        // need to resolve fight - disabilities, death, etc.
+  
+    } // cmd=swing
       
-
-    //     switch(swingResult){ // The switch function goes through every logical swingResult value, assigning damage to the fighter with the lower swingResult accordig to how much lower it is.
-    //         case <-100.:
-    //             if (w1.health().value()<=20) {
-    //                 tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
-    //                 break; // if less than 20, the fighter is dead and the fight breaks out to continue outside the fight if statement to close out the fight.
-    //             }
-    //             else {
-    //               w1.health().value()-=20; // reduce health by 20 - just a simple result and then the fight goes back to the next round. if/else order required to ensure value doesn't fall below allowed minimum.
-    //               tout << " ==> " w2.name() << " hits " << w1.name() << endl;
-    //                 goto nextround;
-    //             }
-    //         case <-50.:
-    //             if (w1.health().value()<=10) {
-    //                 tout << " ==> " w2.name() << "deals a deadly blow!" << endl;
-    //                 break;
-    //             }
-    //             else {
-    //                 w1.health().value()-=10;
-    //                 tout << " ==> " w2.name() << " hits " << w1.name() << endl;
-    //                 goto nextround;
-    //             }
-    //         case <50.:
-    //             tout << " ==> weapons clash and the fight continues.";
-    //             goto nextround;
-    //         case <100.:
-    //             if (w2.health().value()<=10) {
-    //                 tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
-    //                 break;
-    //             }
-    //             else {
-    //                 w2.health().value()-=10;
-    //                 tout << " ==> " w1.name() << " hits " << w1.name() << endl;
-    //                 goto nextround;
-    //             }
-    //         case >=100.:
-    //             if (w2.health().value()<=20) {
-    //                 tout << " ==> " w1.name() << "deals a deadly blow!" << endl;
-    //                 break;
-    //             }
-    //             else {
-    //                 w2.health().value()-=20;
-    //                 tout << " ==> " w1.name() << " hits " << w1.name() << endl;
-    //                 goto nextround;
-    //             }
-    //         default: // accounts for errors only. should never show.
-    //             tout << " ==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight.";
-    //             break;
-    //     } // swing result switch
-    // } // swing command
-
       
   } // while cmd not quit
 
