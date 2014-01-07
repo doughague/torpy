@@ -120,16 +120,38 @@ double Warrior::swing()
   // triple prowess + agility and intel less fatigue.
   double swingQual = mRandom.gaussian(prowess().value(), prowess().error())*3 + 
                      mRandom.gaussian(agility().value(), agility().error()) + 
-                     mRandom.gaussian(intelligence().value(), intelligence().error()) - 
+                     mRandom.gaussian(intelligence().value(), intelligence().error()) -
                      fatigue().value(); 
   return swingQual;
 }
 
 //_____________________________________________________________________________
+/** update warrior disabilities at the end of the fight = stun, disarm, fall
+     \return some kind of double
+*/
+double Warrior::disable(int hstat, int fstat)
+{
+    // --------------------------------------------
+    // check for disabilities based on health and fatigue.
+    int disabilitymod (0);
+    
+    if(fstat>80) disabilitymod+=5;
+    if(hstat<50) disabilitymod+=5;
+    if(hstat<20) disabilitymod+=5;
+    
+    if(mRandom.gaussian(50+disabilitymod,10)>80) stun().setValue(stun().value()+1);
+    if(mRandom.gaussian(50+disabilitymod,10)>80) disarm().setValue(disarm().value()+1);
+    if(mRandom.gaussian(50+disabilitymod,10)>80) fallen().setValue(fallen().value()+1);
+    
+    return 0.;
+}
+
+    
+//_____________________________________________________________________________
 /** ... need to bring in a number to decrement by and a warrior to use it ... 
     \return some kind of double
 */
-double Warrior::recover() // 
+double Warrior::recover()
 {
     // --------------------------------------------
     // change attribute values based on input.

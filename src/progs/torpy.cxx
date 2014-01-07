@@ -74,9 +74,15 @@ int main(int /*argc*/, char** /*argv*/)
   w2.intelligence().set(50., 5., 0. ,100.);
   w2.personality().set(50., 10., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
-    
-  // nextround: 
-  // the swing-by-swing fight returns here after each swing, 
+
+    // initialize bleed; loss of health or fatigue per round
+    int w1bleedh (0);
+    int w2bleedh (0);
+    int w1bleedf (0);
+    int w2bleedf (0);
+
+  // nextround:
+  // the swing-by-swing fight returns here after each swing,
   // unless the fight is over, assuming I've used the 'goto' function properly.
 
   // --------------------------------------------
@@ -121,22 +127,37 @@ int main(int /*argc*/, char** /*argv*/)
     // have a specific fight
     if(cmd == "swing"){
     // deterine if attacking or not
-      tout << "fightorflight ==> " << w1.forf() << w2.forf() << endl; // test only forf numbers
-      !w1.forf() ? tout << "1 will defend." << endl : tout << "1 will attack." << endl;
-      !w2.forf() ? tout << "2 will defend." << endl : tout << "2 will attack." << endl;
+        bool w1forf = w1.forf(); bool w2forf = w2.forf();
+      tout << "fightorflight ==> " << endl;
+      !w1forf ? tout << w1.name() << " prepares a defense." << endl : tout << w1.name() << " leans in to attack." << endl;
+      !w2forf ? tout << w2.name() << " prepares a defense." << endl : tout << w1.name() << " leans in to attack." << endl;
+
+    if(!w1forf && !w2forf){ // if neither w attacks, no action, just minimal fatigue increase.
+          tout << "The two warriors circle each other ==>" << endl;
+     // reduce fatigue if already over 50, become more fatigued if fatigue is low.
+        if(w1.fatigue().value()>50){
+            tout << w1.name() << " regains some strength." << endl;
+            w1.fatigue().setValue(w1.fatigue().value()-3);
+        }
+        else {
+            tout << w1.name() << " tires slightly." << endl;
+            w1.fatigue().setValue(w1.fatigue().value()+3);
+        }
         
-      if(!w1.forf() && !w2.forf()){ // if neither w attacks, no action, just minimal fatigue increase.
-          tout << "warriors circle each other ==>" << endl;
-          
-          w1.fatigue().setValue(w1.fatigue().value()+3);
-          w2.fatigue().setValue(w2.fatigue().value()+3);
-          
-          tout << "1 is getting fatigued : " << w1.fatigue().value() << endl;
-          tout << "2 is getting fatigued : " << w2.fatigue().value() << endl;
-      } // both defending
+        if(w2.fatigue().value()>50){
+            tout << w2.name() << " regains some strength." << endl;
+            w2.fatigue().setValue(w2.fatigue().value()-3);
+        }
+        else {
+            tout << w2.name() << " tires slightly." << endl;
+            w2.fatigue().setValue(w2.fatigue().value()+3);
+        }
+        
+
+    } // both defending
       // if not both defending, then execute fight.
-      else {
-          tout << "clash ==> " << endl;
+    else {
+      tout << "clash ==> " << endl;
 
       tout << w1.name() << ": " << w1.swing() << " vs " << w2.name() << ": " << w2.swing() << endl;
 
@@ -146,50 +167,63 @@ int main(int /*argc*/, char** /*argv*/)
       // after calculating swingresult, resolve damage
       if(swingResult<-100){
 	tout << w2.name() << " deals a grievous blow." << endl;
-          tout << w1.health().value() << ", " << w1.fatigue().value();
-          w1.health().setValue(w1.health().value()-20);// add 5 per round
-          w1.fatigue().setValue(w1.fatigue().value()+20);//should be 5 per round
-          tout << w1.health().value() << ", " << w1.fatigue().value();
-          tout << "<-100"; //test
+          w1.health().setValue(w1.health().value()-20);
+          w1bleedh+=5;
+          w1bleedf+=5;
       }
       else if(swingResult<-50){
 	tout << w2.name() << " deals a serious blow." << endl;
-          tout << w1.health().value() << ", " << w1.fatigue().value();
           w1.health().setValue(w1.health().value()-10);
           w1.fatigue().setValue(w1.fatigue().value()+10);
-          tout << w1.health().value() << ", " << w1.fatigue().value();
-          tout << "<-50"; //test
       }
       else if(swingResult<50){
 	tout << "Weapons clash as the warriors look for an opening." << endl;
           w1.fatigue().setValue(w1.fatigue().value()+6);
           w2.fatigue().setValue(w2.fatigue().value()+6);
-          tout << "<50"; //test
       }
       else if(swingResult<100){
 	tout << w1.name() << " deals a serious blow." << endl;
-          tout << w2.health().value() << ", " << w2.fatigue().value();
           w2.health().setValue(w2.health().value()-10);
           w2.fatigue().setValue(w2.fatigue().value()+10);
-          tout << w2.health().value() << ", " << w2.fatigue().value();
-          tout << "<100"; //test
       }
       else if(swingResult>=100){
 	tout << w1.name() << " deals a grievous blow." << endl;
-          tout << w2.health().value() << ", " << w2.fatigue().value();
-          w2.health().setValue(w2.health().value()-20);// add 5 per round
-          w2.fatigue().setValue(w2.fatigue().value()+20);//should be 5 per round
-          tout << w2.health().value() << ", " << w2.fatigue().value();
-          tout << ">=100"; //test
+          w2.health().setValue(w2.health().value()-20);
+          w2bleedh+=5;
+          w2bleedf+=5;
       }
       else tout << "==> An arrow fletched with human hair lands between the fighters. The demons are displeased and have ended the fight." << endl; // error message only
-        
-      tout << endl << "Awaiting next round." << endl;
-     
+      
         } // not both defending
 
-        // need to resolve fight - disabilities, death, etc.
-  
+        // resolve bleeding
+
+        if(w1bleedh>0||w1bleedf>0) tout << w1.name() << " continues to bleed." << endl;
+        if(w2bleedh>0||w2bleedf>0) tout << w2.name() << " continues to bleed." << endl;
+        
+        w1.health().setValue(w1.health().value()-w1bleedh);
+        w2.health().setValue(w2.health().value()-w2bleedh);
+        w1.fatigue().setValue(w1.fatigue().value()-w1bleedf);
+        w2.fatigue().setValue(w2.fatigue().value()-w2bleedf);
+
+        // show snapshot of fight.
+        tout << w1.name() << " h: " << w1.health().value() << "+" << w1bleedh << ", f: " << w1.fatigue().value() << "+" << w1bleedf << endl;
+        tout << w2.name() << " h: " << w2.health().value() << "+" << w2bleedh << ", f: " << w2.fatigue().value() << "+" << w2bleedf << endl;
+        
+        // end conditions
+        if(w1.health().value()<=0 || w2.health().value()<=0 || w1.fatigue().value()>=100 || w2.fatigue().value()>=100){
+            tout << "The fight has ended." << endl;
+            cmd = "quit";
+        }
+        else tout << "Awaiting next round." << endl;
+        
+        // resolve disabilities
+        w1.disable(w1.health().value(),w1.fatigue().value());
+        w2.disable(w2.health().value(),w2.fatigue().value());
+        
+        tout << w1.name() << " disabilities: " << w1.stun().value() << "/" << w1.disarm().value() << "/" << w1.fallen().value() << endl;
+        tout << w2.name() << " disabilities: " << w2.stun().value() << "/" << w2.disarm().value() << "/" << w2.fallen().value() << endl;
+        
     } // cmd=swing
       
       
