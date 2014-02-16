@@ -9,6 +9,12 @@
 namespace Torpy {
 
 //_____________________________________________________________________________
+/** Printing instructions. */
+static const string kPrefix = "[BloBB]";
+#define tout cout << kPrefix.c_str() << ">  "
+
+    
+//_____________________________________________________________________________
 /** Default constructor. */
 Warrior::Warrior(const char* name, const char* title)
   : Named("Warrior", name, title),
@@ -129,19 +135,47 @@ double Warrior::swing()
 /** update warrior disabilities at the end of the fight = stun, disarm, fall
      \return some kind of double
 */
-double Warrior::disable(int hstat, int fstat)
+double Warrior::disable(int hstat, int fstat, bool forf)
 {
     // --------------------------------------------
     // check for disabilities based on health and fatigue.
     int disabilitymod (0);
     
-    if(fstat>80) disabilitymod+=5;
+    if(fstat<30) disabilitymod+=10;
     if(hstat<50) disabilitymod+=5;
-    if(hstat<20) disabilitymod+=5;
+    if(hstat<20) disabilitymod+=10;
+    if(forf) disabilitymod-=20;
     
-    if(mRandom.gaussian(50+disabilitymod,10)>80) stun().setValue(stun().value()+1);
-    if(mRandom.gaussian(50+disabilitymod,10)>80) disarm().setValue(disarm().value()+1);
-    if(mRandom.gaussian(50+disabilitymod,10)>80) fallen().setValue(fallen().value()+1);
+    double checkstun = mRandom.gaussian(50+disabilitymod,10);
+    double checkdisarm = mRandom.gaussian(50+disabilitymod,10);
+    double checkfall = mRandom.gaussian(50+disabilitymod,10);
+    
+    if(checkstun>80 && stun().value()=0) {
+        stun().setValue(stun().value()+1);
+        tout << name() << " is stunned.";
+    }
+    else if(checkstun<30 && stun().value()=1) {
+        stun().setValue(stun().value()-1);
+        tout << name() << " shakes off the cobwebs.";
+    }
+
+    if(checkdisarm>80 && disarm().value()=0) {
+        disarm().setValue(disarm().value()+1);
+        tout << name() << " is disarmed.";
+    }
+    else if(checkdisarm<30 && disarm().value()=1) {
+        stun().setValue(stun().value()-1);
+        tout << name() << " recovers a weapon.";
+    }
+
+    if(checkfall>80 && fallen().value()=0) {
+        fallen().setValue(fallen().value()+1);
+        tout << name() << " has fallen.";
+    }
+    else if(checkfall<30 && fallen().value()=1) {
+        stun().setValue(stun().value()-1);
+        tout << name() << " is standing again.";
+    }
     
     return 0.;
 }

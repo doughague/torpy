@@ -75,7 +75,10 @@ int main(int /*argc*/, char** /*argv*/)
   w2.personality().set(50., 10., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
 
-    // initialize bleed; loss of health or fatigue per round
+    // initialize fatigue to health and bleed; loss of health or fatigue per round
+    w1.fatigue().setValue(w1.health().value());
+    w2.fatigue().setValue(w2.health().value());
+
     int w1bleedh (0);
     int w2bleedh (0);
     int w1bleedf (0);
@@ -129,12 +132,15 @@ int main(int /*argc*/, char** /*argv*/)
     // deterine if attacking or not
         bool w1forf = w1.forf(); bool w2forf = w2.forf();
       tout << "fightorflight ==> " << endl;
-      !w1forf ? tout << w1.name() << " prepares a defense." << endl : tout << w1.name() << " leans in to attack." << endl;
-      !w2forf ? tout << w2.name() << " prepares a defense." << endl : tout << w1.name() << " leans in to attack." << endl;
+      !w1forf ? tout << w1.name() << " prepares a defense." << endl : tout << w1.name() << " moves to attack." << endl;
+      !w2forf ? tout << w2.name() << " prepares a defense." << endl : tout << w2.name() << " moves to attack." << endl;
 
+        w1.disable(w1.health().value(),w1.fatigue().value(),w1forf);
+        w2.disable(w2.health().value(),w2.fatigue().value(),w2forf);
+        
     if(!w1forf && !w2forf){ // if neither w attacks, no action, just minimal fatigue increase.
           tout << "The two warriors circle each other ==>" << endl;
-     // reduce fatigue if already over 50, become more fatigued if fatigue is low.
+     // reduce fatigue (recover) if already over 50, become more fatigued if fatigue is low.
         if(w1.fatigue().value()>50){
             tout << w1.name() << " regains some strength." << endl;
             w1.fatigue().setValue(w1.fatigue().value()-3);
@@ -159,12 +165,14 @@ int main(int /*argc*/, char** /*argv*/)
     else {
       tout << "clash ==> " << endl;
 
-      tout << w1.name() << ": " << w1.swing() << " vs " << w2.name() << ": " << w2.swing() << endl;
+        double w1swing = w1.swing(); double w2swing = w2.swing();
 
-          double swingResult = w1.swing() - w2.swing();
+      tout << w1.name() << ": " << w1swing << " vs " << w2.name() << ": " << w2swing << endl;
+
+          double swingResult = w1swing - w2swing;
 
       tout << "swing result: " << swingResult << endl;
-      // after calculating swingresult, resolve damage
+      // after calculating swingresult (who came out ahead in the swing), resolve damage
       if(swingResult<-100){
 	tout << w2.name() << " deals a grievous blow." << endl;
           w1.health().setValue(w1.health().value()-20);
@@ -207,19 +215,20 @@ int main(int /*argc*/, char** /*argv*/)
         w2.fatigue().setValue(w2.fatigue().value()-w2bleedf);
 
         // show snapshot of fight.
-        tout << w1.name() << " h: " << w1.health().value() << "+" << w1bleedh << ", f: " << w1.fatigue().value() << "+" << w1bleedf << endl;
-        tout << w2.name() << " h: " << w2.health().value() << "+" << w2bleedh << ", f: " << w2.fatigue().value() << "+" << w2bleedf << endl;
+        tout << w1.name() << " health: " << w1.health().value() << "-" << w1bleedh << " per rd, fatigue: " << w1.fatigue().value() << "-" << w1bleedf << " per rd" << endl;
+        tout << w2.name() << " health: " << w2.health().value() << "-" << w2bleedh << " per rd, fatigue: " << w2.fatigue().value() << "-" << w2bleedf << " per rd" << endl;
         
-        // end conditions
-        if(w1.health().value()<=0 || w2.health().value()<=0 || w1.fatigue().value()>=100 || w2.fatigue().value()>=100){
+        // see if a fighter is defeated
+        // update: should account for if both are defeated
+        if(w1.health().value()<=0 || w2.health().value()<=0 || w1.fatigue().value()<=0 || w2.fatigue().value()<=0){
             tout << "The fight has ended." << endl;
             cmd = "quit";
         }
         else tout << "Awaiting next round." << endl;
         
         // resolve disabilities
-        w1.disable(w1.health().value(),w1.fatigue().value());
-        w2.disable(w2.health().value(),w2.fatigue().value());
+        w1.disable(w1.health().value(),w1.fatigue().value(),w1forf);
+        w2.disable(w2.health().value(),w2.fatigue().value(),w2forf);
         
         tout << w1.name() << " disabilities: " << w1.stun().value() << "/" << w1.disarm().value() << "/" << w1.fallen().value() << endl;
         tout << w2.name() << " disabilities: " << w2.stun().value() << "/" << w2.disarm().value() << "/" << w2.fallen().value() << endl;

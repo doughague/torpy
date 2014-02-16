@@ -76,7 +76,7 @@ public:
   // attack action
   double swing();
   // disabilities update
-  double disable(int hstat, int fstat);
+  double disable(int hstat, int fstat, bool forf);
   // recover after a rest
   double recover();
 
