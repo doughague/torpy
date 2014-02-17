@@ -69,8 +69,6 @@ public:
   //
   // Action methods
   //
-  // fight
-  int fight(Warrior& other);
   // choice of attacking - fight or flight
   bool forf();
   // attack action

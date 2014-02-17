@@ -1,4 +1,4 @@
-/** \file      src/lib/Warrior.cxx 
+/** \file      src/lib/Warrior.cxx
     \brief     Source for Warrior 
     \author    Jason Torpy, Doug Hague
     \date      24.07.2013
@@ -83,22 +83,6 @@ bool Warrior::isEqual(const AbsObject& other) const
   return (mAttribs == w->attribs() &&
 	  mDisability == w->disability());
 }
-
-//_____________________________________________________________________________
-/** This warrior fights other warrior. 
-    This is just a simple example for now.
-    \return result code.
-*/
-int Warrior::fight(Warrior& other)
-{
-  // --------------------------------------------
-  // prowess
-  double ourProwess   = mRandom.gaussian(prowess().value(), prowess().error());
-  double otherProwess = mRandom.gaussian(other.prowess().value(), other.prowess().error());
-  if(ourProwess > otherProwess) return 1;
-  else if(ourProwess < otherProwess) return -1;
-  else return 0;
-}
     
 //_____________________________________________________________________________
 /** establish fight-or-flight; decided whether the warrior will attack or defend.
@@ -149,30 +133,31 @@ double Warrior::disable(int hstat, int fstat, bool forf)
     double checkstun = mRandom.gaussian(50+disabilitymod,10);
     double checkdisarm = mRandom.gaussian(50+disabilitymod,10);
     double checkfall = mRandom.gaussian(50+disabilitymod,10);
+
     
-    if(checkstun>80 && stun().value()=0) {
+    if(checkstun>80 && stun().value()==0) {
         stun().setValue(stun().value()+1);
         tout << name() << " is stunned.";
     }
-    else if(checkstun<30 && stun().value()=1) {
+    else if(checkstun<30 && stun().value()==1) {
         stun().setValue(stun().value()-1);
         tout << name() << " shakes off the cobwebs.";
     }
-
-    if(checkdisarm>80 && disarm().value()=0) {
+     
+    if(checkdisarm>80 && disarm().value()==0) {
         disarm().setValue(disarm().value()+1);
         tout << name() << " is disarmed.";
     }
-    else if(checkdisarm<30 && disarm().value()=1) {
+    else if(checkdisarm<30 && disarm().value()==1) {
         stun().setValue(stun().value()-1);
         tout << name() << " recovers a weapon.";
     }
 
-    if(checkfall>80 && fallen().value()=0) {
+    if(checkfall>80 && fallen().value()==0) {
         fallen().setValue(fallen().value()+1);
         tout << name() << " has fallen.";
     }
-    else if(checkfall<30 && fallen().value()=1) {
+    else if(checkfall<30 && fallen().value()==1) {
         stun().setValue(stun().value()-1);
         tout << name() << " is standing again.";
     }

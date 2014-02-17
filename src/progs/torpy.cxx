@@ -84,10 +84,6 @@ int main(int /*argc*/, char** /*argv*/)
     int w1bleedf (0);
     int w2bleedf (0);
 
-  // nextround:
-  // the swing-by-swing fight returns here after each swing,
-  // unless the fight is over, assuming I've used the 'goto' function properly.
-
   // --------------------------------------------
   // Print warrior info
   tout << endl;
@@ -102,8 +98,7 @@ int main(int /*argc*/, char** /*argv*/)
   tout << endl;
   tout << "***********************************" << endl;
   tout << "Commands: " << endl;
-  tout << "  fight: Have " << w1.name() << " fight " << w2.name() << "." << endl;
-  tout << "  swing: Pit " << w1.name() << " against " << w2.name() <<"." << endl;
+  tout << "  s (for swing): Pit " << w1.name() << " against " << w2.name() <<"." << endl;
   tout << "  quit:  Quit the game and exit." << endl;
   tout << "***********************************" << endl;
 
@@ -117,19 +112,9 @@ int main(int /*argc*/, char** /*argv*/)
     // read command
     std::cin >> cmd;
 
-    // have a fight
-    if(cmd == "fight"){
-      int fightResult = w1.fight(w2);
-      if(fightResult >= 1) 
-	tout << " ==> " << w1.name() << " wins!" << endl;
-      else if(fightResult <= -1) 
-	tout << " ==> " << w2.name() << " wins!" << endl;
-      else 
-	tout << " ==> " << "Draw" << endl;
-    }
-    // have a specific fight
-    if(cmd == "swing"){
-    // deterine if attacking or not
+    // execute fight
+    if(cmd == "s"){
+    // determine if attacking or not
         bool w1forf = w1.forf(); bool w2forf = w2.forf();
       tout << "fightorflight ==> " << endl;
       !w1forf ? tout << w1.name() << " prepares a defense." << endl : tout << w1.name() << " moves to attack." << endl;
@@ -233,7 +218,7 @@ int main(int /*argc*/, char** /*argv*/)
         tout << w1.name() << " disabilities: " << w1.stun().value() << "/" << w1.disarm().value() << "/" << w1.fallen().value() << endl;
         tout << w2.name() << " disabilities: " << w2.stun().value() << "/" << w2.disarm().value() << "/" << w2.fallen().value() << endl;
         
-    } // cmd=swing
+    } // cmd=s
       
       
   } // while cmd not quit
