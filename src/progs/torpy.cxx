@@ -98,7 +98,9 @@ int main(int /*argc*/, char** /*argv*/)
   tout << endl;
   tout << "***********************************" << endl;
   tout << "Commands: " << endl;
-  tout << "  s (for swing): Pit " << w1.name() << " against " << w2.name() <<"." << endl;
+  tout << "  s (for swing): Swing-by-swing fight of " << w1.name() << " against " << w2.name() <<"." << endl;
+  tout << "  d (for death): To the death fight between " << w1.name() << " and " << w2.name() <<"." << endl;
+  tout << "  r (for register): Register new warrior." << endl;
   tout << "  quit:  Quit the game and exit." << endl;
   tout << "***********************************" << endl;
 
@@ -111,9 +113,58 @@ int main(int /*argc*/, char** /*argv*/)
     tout << "Command your warriors: ";
     // read command
     std::cin >> cmd;
+    
+    // replace warrior attributes (w1 or w2 only to start, but add new warriors or select from available warriors in the future; preferrably from warrior database.)
+    if(cmd == "r"){
+        
+        string entrys("");
+        double entryd(0);
+        
+        tout << "enter new warrior name ==> ";
+        std::cin >> entrys;
 
-    // execute fight
-    if(cmd == "s"){
+//      should enter in next Warrior array slot (3,4,5,etc); w3 is just placeholder
+        
+        Warrior w3("newname","new title"); // should have entrys results in newname
+        w3.setRandom(globalRand);
+        
+        tout << "enter new warrior title ==> ";
+        std::cin >> entrys;
+        
+//      need command to put entrys into w3.title.
+        
+        tout << w3.name() << ", " << w3.title() << endl;
+
+        tout << "enter new warrior prowess ==> ";
+        std::cin >> entryd;
+    
+        w3.prowess().set(entryd, 20., 0. ,100.);
+        
+        tout << w3.name() << " prowess: " << w3.prowess().value() << endl;
+        tout << "enter new warrior prowess error ==> ";
+        std::cin >> entryd;
+        
+        w3.prowess().set(w3.prowess().value(),entryd,0.,100.);
+
+        tout << w3.name() << " prowess error: " << w3.prowess().error() << endl;
+        tout << "enter new warrior [attribute] ==> ";
+        std::cin >> entryd;
+        
+        w3.agility().set(60., 15., 0. ,100.);
+        w3.intelligence().set(60., 5., 0. ,100.);
+        w3.personality().set(60., 10., 0. ,100.);
+        w3.health().set(60., 5., 0. ,100.);
+        
+        tout << "this function not yet complete. please choose s." << endl;
+        
+    // PLACEHOLDER - need to know how to set w1.name separate from title.
+    // Also want options to set 'next', like 'enter new warrior'.
+        
+    } // cmd == d
+        
+    // execute fight, continuously "d" or stepwise "s"
+      while(cmd == "d"){
+      if(cmd == "s" || cmd == "d"){
     // determine if attacking or not
         bool w1forf = w1.forf(); bool w2forf = w2.forf();
       tout << "fightorflight ==> " << endl;
@@ -167,17 +218,17 @@ int main(int /*argc*/, char** /*argv*/)
       else if(swingResult<-50){
 	tout << w2.name() << " deals a serious blow." << endl;
           w1.health().setValue(w1.health().value()-10);
-          w1.fatigue().setValue(w1.fatigue().value()+10);
+          w1.fatigue().setValue(w1.fatigue().value()-10);
       }
       else if(swingResult<50){
 	tout << "Weapons clash as the warriors look for an opening." << endl;
-          w1.fatigue().setValue(w1.fatigue().value()+6);
-          w2.fatigue().setValue(w2.fatigue().value()+6);
+          w1.fatigue().setValue(w1.fatigue().value()-6);
+          w2.fatigue().setValue(w2.fatigue().value()-6);
       }
       else if(swingResult<100){
 	tout << w1.name() << " deals a serious blow." << endl;
           w2.health().setValue(w2.health().value()-10);
-          w2.fatigue().setValue(w2.fatigue().value()+10);
+          w2.fatigue().setValue(w2.fatigue().value()-10);
       }
       else if(swingResult>=100){
 	tout << w1.name() << " deals a grievous blow." << endl;
@@ -201,7 +252,9 @@ int main(int /*argc*/, char** /*argv*/)
 
         // show snapshot of fight.
         tout << w1.name() << " health: " << w1.health().value() << "-" << w1bleedh << " per rd, fatigue: " << w1.fatigue().value() << "-" << w1bleedf << " per rd" << endl;
+        if (w1.health().value() <= 0 || w1.fatigue().value() <= 0) tout << w1.name() << " collapses." << endl;
         tout << w2.name() << " health: " << w2.health().value() << "-" << w2bleedh << " per rd, fatigue: " << w2.fatigue().value() << "-" << w2bleedf << " per rd" << endl;
+        if (w2.health().value() <= 0 || w2.fatigue().value() <= 0) tout << w2.name() << " collapses." << endl;
         
         // see if a fighter is defeated
         // update: should account for if both are defeated
@@ -218,8 +271,8 @@ int main(int /*argc*/, char** /*argv*/)
         tout << w1.name() << " disabilities: " << w1.stun().value() << "/" << w1.disarm().value() << "/" << w1.fallen().value() << endl;
         tout << w2.name() << " disabilities: " << w2.stun().value() << "/" << w2.disarm().value() << "/" << w2.fallen().value() << endl;
         
-    } // cmd=s
-      
+    } // cmd == s
+          } // while cmd == d
       
   } // while cmd not quit
 

@@ -134,32 +134,31 @@ double Warrior::disable(int hstat, int fstat, bool forf)
     double checkdisarm = mRandom.gaussian(50+disabilitymod,10);
     double checkfall = mRandom.gaussian(50+disabilitymod,10);
 
-    
     if(checkstun>80 && stun().value()==0) {
         stun().setValue(stun().value()+1);
-        tout << name() << " is stunned.";
+        tout << name() << " is stunned." << endl;
     }
     else if(checkstun<30 && stun().value()==1) {
         stun().setValue(stun().value()-1);
-        tout << name() << " shakes off the cobwebs.";
+        tout << name() << " shakes off the cobwebs." << endl;
     }
      
     if(checkdisarm>80 && disarm().value()==0) {
         disarm().setValue(disarm().value()+1);
-        tout << name() << " is disarmed.";
+        tout << name() << " is disarmed." << endl;
     }
     else if(checkdisarm<30 && disarm().value()==1) {
         stun().setValue(stun().value()-1);
-        tout << name() << " recovers a weapon.";
+        tout << name() << " recovers a weapon." << endl;
     }
 
     if(checkfall>80 && fallen().value()==0) {
         fallen().setValue(fallen().value()+1);
-        tout << name() << " has fallen.";
+        tout << name() << " has fallen." << endl;
     }
     else if(checkfall<30 && fallen().value()==1) {
         stun().setValue(stun().value()-1);
-        tout << name() << " is standing again.";
+        tout << name() << " is standing again." << endl;
     }
     
     return 0.;
