@@ -66,6 +66,9 @@ public:
   inline void setRandom(const Random& r){ mRandom = r; }
   inline const Random& getRandom(){ return mRandom; }
 
+  // admin tasks
+  double getVal(int method, int posn);
+    
   //
   // Action methods
   //

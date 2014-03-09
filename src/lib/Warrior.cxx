@@ -83,6 +83,35 @@ bool Warrior::isEqual(const AbsObject& other) const
   return (mAttribs == w->attribs() &&
 	  mDisability == w->disability());
 }
+
+//_____________________________________________________________________________
+/** Return warrior attributes. Add additional cases for different display methods. */
+double Warrior::getVal(int method, int posn)
+{
+    switch (method){
+    
+        case 1: // separate lines, summary values
+            tout << posn << "." << "0 Name & Title: " << name() << ", " << title() << endl;
+            tout << posn << "." << "1 Prowess: " << prowess().value() << "/" << prowess().error() << "/" << prowess().min() << "/" << prowess().max() << endl;
+            tout << posn << "." << "2 Agility: " << agility().value() << "/" << agility().error() << "/" << agility().min() << "/" << agility().max() << endl;
+            tout << posn << "." << "3 Intelligence: " << intelligence().value() << "/" << intelligence().error() << "/" << intelligence().min() << "/" << intelligence().max() << endl;
+            tout << posn << "." << "4 Personality: " << personality().value() << "/" << personality().error() << "/" << personality().min() << "/" << personality().max() << endl;
+            tout << posn << "." << "5 Health: " << health().value() << "/" << health().error() << "/" << health().min() << "/" << health().max() << endl;
+            break;
+            
+        case 2: // One line, summary attributes
+            tout << posn << ". " << name() << ", " << title() << ", Pr" << prowess().value()
+            << ", A" << agility().value() << ", I" << intelligence().value()
+            << ", Pe" << personality().value() << ", H" << health().value() << endl;
+            break;
+
+        default:
+            tout << "that's not a valid entry." << endl;
+            break;
+
+}
+    return 0;
+}
     
 //_____________________________________________________________________________
 /** establish fight-or-flight; decided whether the warrior will attack or defend.

@@ -8,10 +8,6 @@
 #include "Torpy/TimeStamp.hh"
 #include "Torpy/Warrior.hh"
 
-namespace Torpy {
-static const string kPrefix = "[BloBB]";
-#define tout cout << kPrefix.c_str() << ">  "
-}
 
 // usings
 using namespace Torpy;
@@ -26,6 +22,11 @@ void PrintUsage(ostream& os)
 }
 
 //_____________________________________________________________________________
+/** Printing instructions. */
+static const string kPrefix = "[BloBB]";
+#define tout cout << kPrefix.c_str() << ">  "
+
+//_____________________________________________________________________________
 //! main method testing the CipCurlData class.
 int main(int /*argc*/, char** /*argv*/)
 {
@@ -38,6 +39,7 @@ int main(int /*argc*/, char** /*argv*/)
   tout << "*                 |___/ | \\___/  |___/ |___/     Bled           *" << endl;
   tout << "*****************************************************************" << endl;
   tout << "* Copyright (C) 2013  Jason Torpy, Doug Hague                   *" << endl;
+  tout << "*           This aspires to be a combat simulator.              *" << endl;
   tout << "*           This program comes with ABSOLUTELY NO WARRANTY.     *" << endl;
   tout << "*           This is free software, and you are welcome          *" << endl;
   tout << "*           to redistribute it under the conditions of GNU GPL; *" << endl;
@@ -55,9 +57,13 @@ int main(int /*argc*/, char** /*argv*/)
   // Initialize/seed our "global" random number generator 
   // with the program start time
   Random globalRand(startTime.uts());
-
+    
   // --------------------------------------------
-  // Initialize warriors
+  // Initialize warriors & warrior vector listing
+    
+    
+    vector<Warrior> warv;
+    
   // Alice
   Warrior w1("Alice", "A stronger Warrior");
   w1.setRandom(globalRand);
@@ -75,6 +81,9 @@ int main(int /*argc*/, char** /*argv*/)
   w2.personality().set(50., 10., 0. ,100.);
   w2.health().set(50., 5., 0. ,100.);
 
+    warv.push_back(w1);
+    warv.push_back(w2);
+    
     // initialize fatigue to health and bleed; loss of health or fatigue per round
     w1.fatigue().setValue(w1.health().value());
     w2.fatigue().setValue(w2.health().value());
@@ -116,56 +125,139 @@ int main(int /*argc*/, char** /*argv*/)
     
     // replace warrior attributes (w1 or w2 only to start, but add new warriors or select from available warriors in the future; preferrably from warrior database.)
     if(cmd == "r"){
-        
-        string entrys("");
-        double entryd(0);
-        
-        tout << "enter new warrior name ==> ";
-        std::cin >> entrys;
 
-//      should enter in next Warrior array slot (3,4,5,etc); w3 is just placeholder
+        // add additional warriors to warrior vector warv
         
-        Warrior w3("newname","new title"); // should have entrys results in newname
-        w3.setRandom(globalRand);
+        string entryn(""), entryt("");
+        double entryd1(0),entryd2(0),entryd3(0),entryd4(0);
+        int entryw(0),entrym(0);
         
-        tout << "enter new warrior title ==> ";
-        std::cin >> entrys;
-        
-//      need command to put entrys into w3.title.
-        
-        tout << w3.name() << ", " << w3.title() << endl;
+        // print warrior menu
+        for (int i = 0; i < warv.size(); i++) {
+            tout << warv[i].getVal(2,i);
+        }
 
-        tout << "enter new warrior prowess ==> ";
-        std::cin >> entryd;
-    
-        w3.prowess().set(entryd, 20., 0. ,100.);
+        // ask if new warrior
         
-        tout << w3.name() << " prowess: " << w3.prowess().value() << endl;
-        tout << "enter new warrior prowess error ==> ";
-        std::cin >> entryd;
+        tout << "register new (n) or update existing (u)? ==>";
+        std::cin >> entryn;
         
-        w3.prowess().set(w3.prowess().value(),entryd,0.,100.);
+        if(entryn=="n"){
+            std::getline(std::cin,entryn); // error handler only; if deleted, programs skips straight to title.
+            
+            tout << "enter new warrior name ==> ";
+            std::getline(std::cin,entryn);
+            
+            tout << "enter new warrior title ==> ";
+            std::getline(std::cin,entryt);
+            
+            Warrior w3(entryn.c_str(), entryt.c_str());
+            w3.setRandom(globalRand);
+            warv.push_back(w3);
+        }
+        
+        // update warriors if necessary
 
-        tout << w3.name() << " prowess error: " << w3.prowess().error() << endl;
-        tout << "enter new warrior [attribute] ==> ";
-        std::cin >> entryd;
+        tout << "Choose number of warrior to update:";
+        std::cin >> entryw;
+        warv[entryw].getVal(1,entryw);
         
-        w3.agility().set(60., 15., 0. ,100.);
-        w3.intelligence().set(60., 5., 0. ,100.);
-        w3.personality().set(60., 10., 0. ,100.);
-        w3.health().set(60., 5., 0. ,100.);
+        tout << "Choose attribute (0-5) to update ==> ";
+        std::cin >> entrym;
         
-        tout << "this function not yet complete. please choose s." << endl;
+        switch (entrym) {
+            case 0:
+                std::getline(std::cin,entryn); // error handler only; if deleted, programs skips straight to title.d
+                tout << "enter new warrior name ==> ";
+                std::getline(std::cin,entryn);
+                tout << "enter new warrior title ==> ";
+                std::getline(std::cin,entryt);
+                tout << warv[entryw].name() << ", " << warv[entryw].title() << " is now..." << endl;
+                warv[entryw].setNameTitle(entryn.c_str(),entryt.c_str());
+                tout << warv[entryw].name() << ", " << warv[entryw].title() << endl;
+                break;
+                
+            case 1:
+                tout << "enter new prowess value ==>";
+                std::cin >> entryd1;
+                tout << "enter new prowess error ==>";
+                std::cin >> entryd2;
+                tout << "enter new prowess min ==>";
+                std::cin >> entryd3;
+                tout << "enter new prowess max ==>";
+                std::cin >> entryd4;
+                warv[entryw].prowess().set(entryd1,entryd2,entryd3,entryd4);
+                warv[entryw].getVal(1,entryw);
+                break;
+
+            case 2:
+                tout << "enter new agility value ==>";
+                std::cin >> entryd1;
+                tout << "enter new agility error ==>";
+                std::cin >> entryd2;
+                tout << "enter new agility min ==>";
+                std::cin >> entryd3;
+                tout << "enter new agility max ==>";
+                std::cin >> entryd4;
+                warv[entryw].agility().set(entryd1,entryd2,entryd3,entryd4);
+                warv[entryw].getVal(1,entryw);
+                break;
+                
+            case 3:
+                tout << "enter new intelligence value ==>";
+                std::cin >> entryd1;
+                tout << "enter new intelligence error ==>";
+                std::cin >> entryd2;
+                tout << "enter new intelligence min ==>";
+                std::cin >> entryd3;
+                tout << "enter new intelligence max ==>";
+                std::cin >> entryd4;
+                warv[entryw].intelligence().set(entryd1,entryd2,entryd3,entryd4);
+                warv[entryw].getVal(1,entryw);
+                break;
+                
+            case 4:
+                tout << "enter new personality value ==>";
+                std::cin >> entryd1;
+                tout << "enter new personality error ==>";
+                std::cin >> entryd2;
+                tout << "enter new personality min ==>";
+                std::cin >> entryd3;
+                tout << "enter new personality max ==>";
+                std::cin >> entryd4;
+                warv[entryw].personality().set(entryd1,entryd2,entryd3,entryd4);
+                warv[entryw].getVal(1,entryw);
+                break;
+                
+            case 5:
+                tout << "enter new health value ==>";
+                std::cin >> entryd1;
+                tout << "enter new health error ==>";
+                std::cin >> entryd2;
+                tout << "enter new health min ==>";
+                std::cin >> entryd3;
+                tout << "enter new health max ==>";
+                std::cin >> entryd4;
+                warv[entryw].health().set(entryd1,entryd2,entryd3,entryd4);
+                warv[entryw].getVal(1,entryw);
+                break;
+
+            default:
+                tout << "that's not a valid entry." << endl;
+                break;
+                
+        }
         
-    // PLACEHOLDER - need to know how to set w1.name separate from title.
-    // Also want options to set 'next', like 'enter new warrior'.
-        
+        tout << "enter r, s, d, quit (new warriors not yet implemented for fights)." << endl;
+                
     } // cmd == d
         
     // execute fight, continuously "d" or stepwise "s"
-      while(cmd == "d"){
-      if(cmd == "s" || cmd == "d"){
-    // determine if attacking or not
+      while(cmd == "d" || cmd == "s"){
+          
+        tout << endl;
+          
+          // determine if attacking or not
         bool w1forf = w1.forf(); bool w2forf = w2.forf();
       tout << "fightorflight ==> " << endl;
       !w1forf ? tout << w1.name() << " prepares a defense." << endl : tout << w1.name() << " moves to attack." << endl;
@@ -270,9 +362,10 @@ int main(int /*argc*/, char** /*argv*/)
         
         tout << w1.name() << " disabilities: " << w1.stun().value() << "/" << w1.disarm().value() << "/" << w1.fallen().value() << endl;
         tout << w2.name() << " disabilities: " << w2.stun().value() << "/" << w2.disarm().value() << "/" << w2.fallen().value() << endl;
-        
-    } // cmd == s
-          } // while cmd == d
+    
+    if(cmd == "s") { cmd = "m"; }
+   
+      } // while cmd == d
       
   } // while cmd not quit
 
