@@ -27,7 +27,7 @@ static const string kPrefix = "[BloBB]";
 #define tout cout << kPrefix.c_str() << ">  "
 
 //_____________________________________________________________________________
-//! main method testing the CipCurlData class.
+//! main method with basic navigation and calls.
 int main(int /*argc*/, char** /*argv*/)
 {
   // --------------------------------------------
@@ -55,8 +55,8 @@ int main(int /*argc*/, char** /*argv*/)
 
   // --------------------------------------------
   // Initialize warrior vector, warrior variables, and initial warriors
-    vector<Warrior> warv;
-    int vs1(0), vs2(1); // used to select vector node of warriors fighting replaces old w1/w2 system.
+    vector<Warrior> warv; // used to select vector node of warriors fighting replaces old w1/w2 system.
+    int vs1(0), vs2(1); // used in warv[vs#]; needs to allow multiple warriors per fight
     string entryn(""), entryt("");
     double entryd1(0),entryd2(0),entryd3(0),entryd4(0);
     int entryw(0),entrym(0);
@@ -119,6 +119,7 @@ int main(int /*argc*/, char** /*argv*/)
       tout << "  s (for swing): Swing-by-swing fight of " << warv[vs1].name() << " against " << warv[vs2].name() <<"." << endl;
       tout << "  d (for death): To the death fight between " << warv[vs1].name() << " and " << warv[vs2].name() <<"." << endl;
       tout << "  r (for register): Register new warrior." << endl;
+      tout << "  f (for file operations): Work with Files." << endl;
       tout << "  quit:  Quit the game and exit." << endl;
       tout << "***********************************" << endl;
           
@@ -128,13 +129,35 @@ int main(int /*argc*/, char** /*argv*/)
           std::cin >> cmd;
 
       }
-      
+ 
+      if(cmd == "f"){ // new file operations; working
+          
+          int f1(0),f2(1);
+          tout << "Warriors: " << endl;
+          // print warrior menu
+          for (int i = 0; i < warv.size(); i++) {
+              warv[i].getVal(2,i);
+          }
+          
+          tout << "Choose warrior:";
+          std::cin>>f1;
+
+          tout << "Choose operation [1 write, 2 read]:";
+          std::cin>>f2;
+         
+          warv[f1].doFile(f2,f1);
+          
+          cmd="m";
+          
+          
+      } // cmd==f
+
       if(cmd == "c"){
           
           tout << "Warriors: " << endl;
           // print warrior menu
           for (int i = 0; i < warv.size(); i++) {
-              warv[i].getVal(2,i);
+              warv[i].getVal(1,i);
           }
 
           tout << "Choose first fighter:";

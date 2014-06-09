@@ -5,11 +5,7 @@
     \copyright See License.txt
 */
 #include "Torpy/Warrior.hh"  // this class
-#include "Torpy/TimeStamp.hh"  // this class
-#include <fstream> // includes fstream,iostream,string for new file in/out method
-#include <iostream>
-#include <string>
-#include <time.h> // for ID
+#include <fstream>
 
 namespace Torpy {
 
@@ -120,65 +116,23 @@ double Warrior::getVal(int method, int posn)
     
 //_____________________________________________________________________________
 /** Output or input warrior details to file. */
-double Warrior::doFile(int method, int posn)
+double Warrior::getVal(int method, int posn)
 {
-    ofstream myofile;
-    ifstream myifile;
-    string line("");
-    string filename ("objects.bl");
-    
-    string tidt("");
-    string tidl(""), tid("");
-    tidt=time(NULL);
-    tout << "time: " << tidt.c_str() << endl;
-    
-    tidl = strlen(tidt.c_str());
-    tid = tidt[3]<<tidt[2]<<tidt[1]<<tidt[5];
-    
-    tout << "tid: " << tid << endl;
-    
-           
     switch (method){
             
         case 1: // output data
-            
-            myofile.open (filename.c_str()); // in top level torpy folder
-            
-            if(myofile.is_open())
-            {
-
-            myofile << "newobject" << endl;
-            myofile << "0 Name & Title: " << name() << "," << title() << endl;
-            myofile << "1 Prowess: " << prowess().value() << "," << prowess().error() << "," << prowess().min() << "," << prowess().max() << endl;
-            myofile << "2 Agility: " << agility().value() << "," << agility().error() << "," << agility().min() << "," << agility().max() << endl;
-            myofile << "3 Intelligence: " << intelligence().value() << "," << intelligence().error() << "," << intelligence().min() << "," << intelligence().max() << endl;
-            myofile << "4 Personality: " << personality().value() << "," << personality().error() << "," << personality().min() << "," << personality().max() << endl;
-            myofile << "5 Health: " << health().value() << "," << health().error() << "," << health().min() << "," << health().max() << endl;
-
-            myofile.close();
-            
-            }
-            else cout<< "*** unable to open file ***" << endl;
-            
+            tout << posn << "." << "0 Name & Title: " << name() << ", " << title() << endl;
+            tout << posn << "." << "1 Prowess: " << prowess().value() << "/" << prowess().error() << "/" << prowess().min() << "/" << prowess().max() << endl;
+            tout << posn << "." << "2 Agility: " << agility().value() << "/" << agility().error() << "/" << agility().min() << "/" << agility().max() << endl;
+            tout << posn << "." << "3 Intelligence: " << intelligence().value() << "/" << intelligence().error() << "/" << intelligence().min() << "/" << intelligence().max() << endl;
+            tout << posn << "." << "4 Personality: " << personality().value() << "/" << personality().error() << "/" << personality().min() << "/" << personality().max() << endl;
+            tout << posn << "." << "5 Health: " << health().value() << "/" << health().error() << "/" << health().min() << "/" << health().max() << endl;
             break;
             
-        case 2: // view data
-            myifile.open (filename.c_str()); // in top level torpy folder
-
-            if (myifile.is_open())
-            {
-                while (! myifile.eof() )
-                {
-                    getline (myifile,line);
-                    cout << line << endl;
-                }
-                myifile.close();
-            }
-            else cout<< "*** unable to open file ***" << endl;
-            
-//            tout << posn << ". " << name() << ", " << title() << ", Pr" << prowess().value()
-//            << ", A" << agility().value() << ", I" << intelligence().value()
-//            << ", Pe" << personality().value() << ", H" << health().value() << endl;
+        case 2: // One line, summary attributes
+            tout << posn << ". " << name() << ", " << title() << ", Pr" << prowess().value()
+            << ", A" << agility().value() << ", I" << intelligence().value()
+            << ", Pe" << personality().value() << ", H" << health().value() << endl;
             break;
             
         default:
@@ -188,6 +142,9 @@ double Warrior::doFile(int method, int posn)
     }
     return 0;
 }
+
+
+    
     
 //_____________________________________________________________________________
 /** establish fight-or-flight; decided whether the warrior will attack or defend.

@@ -68,6 +68,7 @@ public:
 
   // admin tasks
   double getVal(int method, int posn);
+  double doFile(int method, int posn);
     
   //
   // Action methods
